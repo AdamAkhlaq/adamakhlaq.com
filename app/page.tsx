@@ -5,7 +5,7 @@ import { useOperatingSystem } from "@/hooks/use-operating-system";
 import { Command } from "lucide-react";
 
 export default function Home() {
-  const { isMac } = useOperatingSystem();
+  const { isMac, mounted } = useOperatingSystem();
 
   return (
     <div className="min-h-screen bg-white dark:bg-black">
@@ -20,25 +20,32 @@ export default function Home() {
             experiments.
           </p>
           <p className="font-inter text-sm text-neutral-400 dark:text-neutral-500">
-            Press{" "}
-            <KbdGroup>
-              {isMac ? (
-                <>
-                  <Kbd>
-                    <Command className="h-3 w-3" />
-                  </Kbd>
-                  <span>+</span>
-                  <Kbd>K</Kbd>
-                </>
-              ) : (
-                <>
-                  <Kbd>Ctrl</Kbd>
-                  <span>+</span>
-                  <Kbd>K</Kbd>
-                </>
-              )}
-            </KbdGroup>{" "}
-            to open command palette
+            <span className="hidden lg:inline">
+              Press{" "}
+              {mounted && (
+                <KbdGroup>
+                  {isMac ? (
+                    <>
+                      <Kbd>
+                        <Command className="h-3 w-3" />
+                      </Kbd>
+                      <span>+</span>
+                      <Kbd>K</Kbd>
+                    </>
+                  ) : (
+                    <>
+                      <Kbd>Ctrl</Kbd>
+                      <span>+</span>
+                      <Kbd>K</Kbd>
+                    </>
+                  )}
+                </KbdGroup>
+              )}{" "}
+              to open command palette
+            </span>
+            <span className="lg:hidden">
+              Tap the search icon above to navigate
+            </span>
           </p>
         </div>
       </main>

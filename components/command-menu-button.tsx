@@ -10,7 +10,7 @@ interface CommandMenuButtonProps {
 }
 
 export function CommandMenuButton({ onClick }: CommandMenuButtonProps) {
-  const { isMac } = useOperatingSystem();
+  const { isMac, mounted } = useOperatingSystem();
 
   return (
     <motion.button
@@ -24,23 +24,25 @@ export function CommandMenuButton({ onClick }: CommandMenuButtonProps) {
     >
       <Search className="h-4 w-4" />
       <span className="hidden sm:inline">Search</span>
-      <KbdGroup className="ml-2 hidden sm:inline-flex">
-        {isMac ? (
-          <>
-            <Kbd>
-              <Command className="h-3 w-3" />
-            </Kbd>
-            <span>+</span>
-            <Kbd>K</Kbd>
-          </>
-        ) : (
-          <>
-            <Kbd>Ctrl</Kbd>
-            <span>+</span>
-            <Kbd>K</Kbd>
-          </>
-        )}
-      </KbdGroup>
+      {mounted && (
+        <KbdGroup className="ml-2 hidden sm:inline-flex">
+          {isMac ? (
+            <>
+              <Kbd>
+                <Command className="h-3 w-3" />
+              </Kbd>
+              <span>+</span>
+              <Kbd>K</Kbd>
+            </>
+          ) : (
+            <>
+              <Kbd>Ctrl</Kbd>
+              <span>+</span>
+              <Kbd>K</Kbd>
+            </>
+          )}
+        </KbdGroup>
+      )}
     </motion.button>
   );
 }

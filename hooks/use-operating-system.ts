@@ -1,12 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useSyncExternalStore } from "react";
+
+function getIsMac() {
+  if (typeof window === "undefined") return false;
+  return navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+}
+
+function subscribe() {
+  return () => {};
+}
 
 export function useOperatingSystem() {
-  const [isMac] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return navigator.platform.toUpperCase().indexOf("MAC") >= 0;
-  });
+  const isMac = useSyncExternalStore(subscribe, getIsMac, () => false);
 
-  return { isMac };
+  return { isMac, mounted: true };
 }
