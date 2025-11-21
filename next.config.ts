@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import withBundleAnalyzer from "@next/bundle-analyzer";
 
 const nextConfig: NextConfig = {
   // Enable Cache Components (stable in Next.js 16.0.3+)
@@ -86,4 +87,8 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+const bundleAnalyzer = withBundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
+
+export default bundleAnalyzer(nextConfig);
