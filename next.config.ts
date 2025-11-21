@@ -4,6 +4,20 @@ const nextConfig: NextConfig = {
   // Enable Cache Components (stable in Next.js 16.0.3+)
   cacheComponents: true,
 
+  // Proxy DataFast Analytics through own domain to bypass ad blockers
+  async rewrites() {
+    return [
+      {
+        source: "/js/script.js",
+        destination: "https://datafa.st/js/script.js",
+      },
+      {
+        source: "/api/events",
+        destination: "https://datafa.st/api/events",
+      },
+    ];
+  },
+
   // Security Headers
   async headers() {
     return [
@@ -15,11 +29,11 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://datafa.st",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com data:",
               "img-src 'self' data: blob: https:",
-              "connect-src 'self' https://datafa.st",
+              "connect-src 'self'",
               "frame-src 'self' https:",
               "media-src 'self'",
               "object-src 'none'",

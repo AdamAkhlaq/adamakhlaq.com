@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { CommandPaletteProvider } from "@/components/command-palette-provider";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -69,6 +70,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <Script
+          data-website-id={process.env.NEXT_PUBLIC_DATAFAST_WEBSITE_ID}
+          data-domain="www.adamakhlaq.com"
+          data-allow-file-protocol="true"
+          src="/js/script.js"
+          strategy="afterInteractive"
+        />
+      </head>
       <body
         className={`${geist.variable} ${geistMono.variable} ${inter.variable} antialiased`}
       >
