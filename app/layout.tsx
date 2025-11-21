@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { CommandPaletteProvider } from "@/components/command-palette-provider";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
 const geist = Geist({
@@ -20,7 +22,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Adam Akhlaq",
   description:
-    "Adam Akhlaq is a software engineer who builds innovative products and creates software for the joy of solving problems and learning new technologies.",
+    "Full-stack software engineer and indie hacker. I build products that matter to me, whether they're useful tools or just fun experiments.",
   keywords: [
     "Adam Akhlaq",
     "software engineer",
@@ -36,14 +38,14 @@ export const metadata: Metadata = {
     url: "https://adamakhlaq.com",
     title: "Adam Akhlaq",
     description:
-      "Adam Akhlaq is a software engineer who builds innovative products and creates software for the joy of solving problems and learning new technologies.",
+      "Full-stack software engineer and indie hacker. I build products that matter to me, whether they're useful tools or just fun experiments.",
     siteName: "Adam Akhlaq",
   },
   twitter: {
     card: "summary_large_image",
     title: "Adam Akhlaq",
     description:
-      "Adam Akhlaq is a software engineer who builds innovative products and creates software for the joy of solving problems and learning new technologies.",
+      "Full-stack software engineer and indie hacker. I build products that matter to me, whether they're useful tools or just fun experiments.",
     creator: "@adamakhlaq",
   },
   robots: {
@@ -70,7 +72,9 @@ export default function RootLayout({
       <body
         className={`${geist.variable} ${geistMono.variable} ${inter.variable} antialiased`}
       >
-        {children}
+        <ThemeProvider>
+          <CommandPaletteProvider>{children}</CommandPaletteProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
