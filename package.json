@@ -33,11 +33,13 @@
   "devDependencies": {
     "@next/bundle-analyzer": "^16.0.3",
     "@tailwindcss/postcss": "^4",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/recharts": "^2.0.1",
     "baseline-browser-mapping": "^2.8.32",
+    "canvas-confetti": "^1.9.4",
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
     "prettier": "^3.6.2",
