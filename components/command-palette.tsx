@@ -11,16 +11,7 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import {
-  Home,
-  FolderKanban,
-  Globe,
-  Moon,
-  Sun,
-  Mail,
-  BarChart3,
-  ChefHat,
-} from "lucide-react";
+import { Home, Moon, Sun, Mail } from "lucide-react";
 import { FaGithub, FaLinkedin, FaInstagram, FaYoutube } from "react-icons/fa";
 import { useTheme } from "@/components/theme-provider";
 
@@ -66,34 +57,6 @@ export function CommandPalette({ open, setOpen }: CommandPaletteProps) {
           >
             <Home className="h-4 w-4" />
             <span>Home</span>
-          </CommandItem>
-          <CommandItem
-            onSelect={() => runCommand(() => router.push("/projects"))}
-            className="flex items-center gap-2"
-          >
-            <FolderKanban className="h-4 w-4" />
-            <span>Projects</span>
-          </CommandItem>
-          <CommandItem
-            onSelect={() => runCommand(() => router.push("/cookbook"))}
-            className="flex items-center gap-2"
-          >
-            <ChefHat className="h-4 w-4" />
-            <span>Cookbook</span>
-          </CommandItem>
-          <CommandItem
-            onSelect={() => runCommand(() => router.push("/stats"))}
-            className="flex items-center gap-2"
-          >
-            <BarChart3 className="h-4 w-4" />
-            <span>Stats</span>
-          </CommandItem>
-          <CommandItem
-            onSelect={() => runCommand(() => router.push("/travel"))}
-            className="flex items-center gap-2"
-          >
-            <Globe className="h-4 w-4" />
-            <span>Travel Map</span>
           </CommandItem>
         </CommandGroup>
 
