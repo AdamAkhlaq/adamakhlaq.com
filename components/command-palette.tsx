@@ -11,7 +11,7 @@ import {
 	CommandList,
 	CommandSeparator,
 } from "@/components/ui/command";
-import { Home, Moon, Sun, Mail } from "lucide-react";
+import { Home, Moon, Sun, Mail, Gamepad2 } from "lucide-react";
 import { FaGithub, FaLinkedin, FaInstagram, FaYoutube } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { useTheme } from "@/components/theme-provider";
@@ -58,6 +58,13 @@ export function CommandPalette({ open, setOpen }: CommandPaletteProps) {
 					>
 						<Home className="h-4 w-4" />
 						<span>Home</span>
+					</CommandItem>
+					<CommandItem
+						onSelect={() => runCommand(() => router.push("/games"))}
+						className="flex items-center gap-2"
+					>
+						<Gamepad2 className="h-4 w-4" />
+						<span>Games</span>
 					</CommandItem>
 				</CommandGroup>
 
