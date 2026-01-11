@@ -3,16 +3,13 @@
 import { useEffect, useRef, useCallback } from "react";
 
 /**
- * Hook to handle iOS Safari keyboard scroll behavior.
- * When the keyboard appears, iOS Safari scrolls the focused input into view,
- * often pushing important content (like a flag image) off screen.
- * This hook scrolls a target element into view after the keyboard appears.
+ * Hook to handle iOS Safari keyboard behavior.
+ * Prevents iOS from scrolling the page when the keyboard appears,
+ * keeping all content visible above the keyboard.
  */
-export function useIOSKeyboardScroll(
-	targetRef: React.RefObject<HTMLElement | null>
-) {
+export function useIOSKeyboardScroll() {
 	const isIOS = useRef(false);
-	const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+	const initialScrollPos = useRef(0);
 
 	useEffect(() => {
 		// Detect iOS
@@ -22,30 +19,25 @@ export function useIOSKeyboardScroll(
 	}, []);
 
 	const handleFocus = useCallback(() => {
-		if (!isIOS.current || !targetRef.current) return;
+		if (!isIOS.current) return;
 
-		// Clear any existing timeout
-		if (timeoutRef.current) {
-			clearTimeout(timeoutRef.current);
-		}
+		// Store the current scroll position
+		initialScrollPos.current = window.scrollY;
 
-		// Wait for keyboard to fully appear, then scroll the target into view
-		// iOS keyboard animation takes ~300ms
-		timeoutRef.current = setTimeout(() => {
-			targetRef.current?.scrollIntoView({
-				behavior: "smooth",
-				block: "start",
-				inline: "nearest",
-			});
-		}, 350);
-	}, [targetRef]);
-
-	useEffect(() => {
-		return () => {
-			if (timeoutRef.current) {
-				clearTimeout(timeoutRef.current);
-			}
+		// Prevent iOS from scrolling by immediately scrolling back
+		// This runs after iOS has started its scroll animation
+		const preventScroll = () => {
+			window.scrollTo(0, initialScrollPos.current);
 		};
+
+		// Use multiple timeouts to counteract iOS scroll behavior
+		// iOS animates the scroll over ~300ms
+		setTimeout(preventScroll, 0);
+		setTimeout(preventScroll, 50);
+		setTimeout(preventScroll, 100);
+		setTimeout(preventScroll, 150);
+		setTimeout(preventScroll, 200);
+		setTimeout(preventScroll, 300);
 	}, []);
 
 	return { handleFocus };

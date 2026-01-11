@@ -83,13 +83,11 @@ export default function FlagQuizPage() {
 	const inputRef = useRef<HTMLInputElement | null>(null);
 	const letterBoxRef = useRef<LetterBoxInputHandle | null>(null);
 	const previousGameCountriesRef = useRef<Set<string>>(new Set());
-	const flagContainerRef = useRef<HTMLDivElement | null>(null);
 
 	// Hooks
 	const { isMac } = useOperatingSystem();
 	const { cardRef, fireCelebration } = useConfetti();
-	const { handleFocus: handleIOSFocus } =
-		useIOSKeyboardScroll(flagContainerRef);
+	const { handleFocus: handleIOSFocus } = useIOSKeyboardScroll();
 
 	// Derived values
 	const currentCountry = questionPool[currentIndex];
@@ -330,7 +328,7 @@ export default function FlagQuizPage() {
 
 	return (
 		<div className="min-h-screen bg-background">
-			<main className="container mx-auto px-4 py-6 sm:py-8">
+			<main className="container mx-auto px-4 pt-16 pb-6 sm:py-8">
 				<AnimatePresence mode="wait">
 					{gameStatus === "setup" && (
 						<motion.div
@@ -578,7 +576,7 @@ export default function FlagQuizPage() {
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, y: -20 }}
-							className="mx-auto max-w-lg space-y-3 sm:space-y-4 md:space-y-6 pb-4"
+							className="mx-auto max-w-lg space-y-4 sm:space-y-5 md:space-y-6 pt-2 sm:pt-4"
 						>
 							{/* Progress / Timer Bar */}
 							<div className="space-y-2">
@@ -628,10 +626,7 @@ export default function FlagQuizPage() {
 							</div>
 
 							{/* Flag Display */}
-							<div
-								ref={flagContainerRef}
-								className="relative h-32 sm:h-44 md:h-56 flex items-center justify-center"
-							>
+							<div className="relative h-40 sm:h-48 md:h-56 flex items-center justify-center">
 								<motion.div
 									key={currentCountry.code}
 									initial={{ opacity: 0, scale: 0.95 }}
@@ -642,7 +637,7 @@ export default function FlagQuizPage() {
 									<img
 										src={getFlagUrl(currentCountry.code, 640)}
 										alt="Country flag"
-										className="max-h-32 sm:max-h-44 md:max-h-56 w-auto rounded-lg shadow-md"
+										className="max-h-40 sm:max-h-48 md:max-h-56 w-auto rounded-lg shadow-md"
 										draggable={false}
 									/>
 									{/* Hint button */}
@@ -713,7 +708,7 @@ export default function FlagQuizPage() {
 							</AnimatePresence>
 
 							{/* Input Area */}
-							<div className="space-y-2 sm:space-y-3">
+							<div className="space-y-3 sm:space-y-4">
 								<AnimatePresence mode="wait">
 									{currentHintLevel === 0 ? (
 										<motion.div
