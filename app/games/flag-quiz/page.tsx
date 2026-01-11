@@ -359,14 +359,14 @@ export default function FlagQuizPage() {
 								<label className="text-sm font-medium text-muted-foreground">
 									Game Mode
 								</label>
-								<div className="flex rounded-lg bg-muted p-1">
+								<div className="flex rounded-lg bg-neutral-200 dark:bg-neutral-800 p-1">
 									{(["count", "timed"] as const).map((mode) => (
 										<button
 											key={mode}
 											onClick={() => setConfig((prev) => ({ ...prev, mode }))}
 											className={`flex-1 py-2.5 px-4 rounded-md text-sm font-medium transition-all ${
 												config.mode === mode
-													? "bg-background shadow-sm text-foreground"
+													? "bg-white dark:bg-neutral-900 shadow-sm text-foreground"
 													: "text-muted-foreground hover:text-foreground"
 											}`}
 										>
@@ -400,7 +400,7 @@ export default function FlagQuizPage() {
 												className={`relative overflow-hidden rounded-xl p-4 text-left transition-all border-2 ${
 													isSelected
 														? "border-primary bg-primary/5"
-														: "border-border hover:border-primary/50"
+														: "border-neutral-300 dark:border-neutral-700 hover:border-primary/50"
 												}`}
 												style={{ background: region.pattern }}
 											>
@@ -455,10 +455,10 @@ export default function FlagQuizPage() {
 														whileTap={!isDisabled ? { scale: 0.98 } : {}}
 														className={`relative p-3 rounded-xl text-center transition-all border-2 ${
 															isDisabled
-																? "border-border/50 bg-muted/50 opacity-50 cursor-not-allowed"
+																? "border-neutral-300/50 dark:border-neutral-700/50 bg-muted/50 opacity-50 cursor-not-allowed"
 																: isSelected
 																	? "border-primary bg-primary/5"
-																	: "border-border hover:border-primary/50"
+																	: "border-neutral-300 dark:border-neutral-700 hover:border-primary/50"
 														}`}
 													>
 														{isSelected && (
@@ -491,7 +491,7 @@ export default function FlagQuizPage() {
 												className={`relative p-3 rounded-xl text-center transition-all border-2 ${
 													config.countLimit === regionCountryCount
 														? "border-primary bg-primary/5"
-														: "border-border hover:border-primary/50"
+														: "border-neutral-300 dark:border-neutral-700 hover:border-primary/50"
 												}`}
 											>
 												{config.countLimit === regionCountryCount && (
@@ -529,7 +529,7 @@ export default function FlagQuizPage() {
 													className={`relative p-3 rounded-xl text-center transition-all border-2 ${
 														isSelected
 															? "border-primary bg-primary/5"
-															: "border-border hover:border-primary/50"
+															: "border-neutral-300 dark:border-neutral-700 hover:border-primary/50"
 													}`}
 												>
 													{isSelected && (
@@ -666,7 +666,7 @@ export default function FlagQuizPage() {
 												: {}
 										}
 										transition={{ duration: 0.3 }}
-										className={`absolute -top-2 -right-2 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center bg-white/90 dark:bg-gray-800/90 shadow-lg border border-border/50 transition-colors cursor-pointer ${
+										className={`absolute -top-2 -right-2 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center bg-white dark:bg-gray-800 shadow-lg border border-neutral-300 dark:border-neutral-600 transition-colors cursor-pointer ${
 											currentHintLevel >= MAX_HINT_LEVEL
 												? "opacity-40 cursor-not-allowed!"
 												: "hover:bg-yellow-100 dark:hover:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400"
@@ -830,7 +830,7 @@ export default function FlagQuizPage() {
 										initial={{ scale: 0.8, opacity: 0 }}
 										animate={{ scale: 1, opacity: 1 }}
 										transition={{ delay: 0.2 }}
-										className="rounded-xl bg-linear-to-br from-primary/10 to-primary/5 p-6"
+										className="rounded-xl bg-linear-to-br from-primary/15 to-primary/5 border border-primary/10 p-6"
 									>
 										<p className="text-5xl font-bold mb-2">{score}</p>
 										<p className="text-sm text-muted-foreground">
@@ -839,11 +839,11 @@ export default function FlagQuizPage() {
 									</motion.div>
 
 									<div className="grid grid-cols-2 gap-4 text-sm">
-										<div className="rounded-lg bg-muted/50 p-3">
+										<div className="rounded-lg bg-muted p-3">
 											<p className="text-2xl font-semibold">{answeredCount}</p>
 											<p className="text-muted-foreground">Flags Answered</p>
 										</div>
-										<div className="rounded-lg bg-muted/50 p-3">
+										<div className="rounded-lg bg-muted p-3">
 											<p className="text-2xl font-semibold">{hintsUsed}</p>
 											<p className="text-muted-foreground">Hints Used</p>
 										</div>

@@ -164,7 +164,7 @@ export const LetterBoxInput = React.forwardRef<
 		if (showResult === "wrong") {
 			return `${baseClasses} border-red-500 animate-shake`;
 		}
-		return `${baseClasses} bg-background border-border hover:border-primary/50`;
+		return `${baseClasses} bg-white dark:bg-neutral-900 border-neutral-300 dark:border-neutral-700 hover:border-primary/50`;
 	};
 
 	return (
