@@ -75,6 +75,9 @@ export default function FlagQuizPage() {
 	const [scoreAnimation, setScoreAnimation] = useState<number | null>(null);
 	const [timeRemaining, setTimeRemaining] = useState(0);
 	const [hintFlash, setHintFlash] = useState(false);
+	const [revealedIndices, setRevealedIndices] = useState<Set<number>>(
+		new Set()
+	);
 
 	// Refs
 	const inputRef = useRef<HTMLInputElement | null>(null);
@@ -83,7 +86,7 @@ export default function FlagQuizPage() {
 
 	// Hooks
 	const { isMac } = useOperatingSystem();
-	const { cardRef, fireCorrectAnswerConfetti, fireCelebration } = useConfetti();
+	const { cardRef, fireCelebration } = useConfetti();
 
 	// Derived values
 	const currentCountry = questionPool[currentIndex];
@@ -159,6 +162,7 @@ export default function FlagQuizPage() {
 		setShowResult(null);
 		setAnsweredCount(0);
 		setScoreAnimation(null);
+		setRevealedIndices(new Set());
 	}, []);
 
 	const startGame = useCallback(() => {
@@ -199,7 +203,9 @@ export default function FlagQuizPage() {
 			setTextInputValue("");
 			setCurrentHintLevel(0);
 			setShowResult(null);
-			inputRef.current?.focus();
+			setRevealedIndices(new Set());
+			// Use setTimeout to focus after React re-renders the new question
+			setTimeout(() => inputRef.current?.focus(), 50);
 		}
 	}, [isLastQuestion]);
 
@@ -208,7 +214,7 @@ export default function FlagQuizPage() {
 
 		const answer =
 			currentHintLevel > 0
-				? buildLetterBoxAnswer(currentCountry, currentHintLevel, letterBoxInput)
+				? buildLetterBoxAnswer(currentCountry, revealedIndices, letterBoxInput)
 				: textInputValue;
 
 		if (checkAnswer(currentCountry, answer)) {
@@ -217,7 +223,6 @@ export default function FlagQuizPage() {
 			setScoreAnimation(pointsEarned);
 			setShowResult("correct");
 			setAnsweredCount((prev) => prev + 1);
-			fireCorrectAnswerConfetti();
 			setTimeout(advanceToNextQuestion, 1200);
 		} else {
 			setShowResult("wrong");
@@ -230,9 +235,17 @@ export default function FlagQuizPage() {
 				setTimeout(() => {
 					if (currentCountry) {
 						setLetterBoxInput(Array(currentCountry.name.length).fill(""));
+						const newHintLevel = currentHintLevel + 1;
+						// Generate new revealed indices with random letter selection
+						const newRevealedIndices = getRevealedIndices(
+							currentCountry,
+							newHintLevel,
+							revealedIndices
+						);
+						setRevealedIndices(newRevealedIndices);
+						setCurrentHintLevel(newHintLevel);
 					}
 					setTextInputValue("");
-					setCurrentHintLevel((prev) => prev + 1);
 					setHintsUsed((prev) => prev + 1);
 					setShowResult(null);
 					setHintFlash(false);
@@ -247,20 +260,33 @@ export default function FlagQuizPage() {
 		letterBoxInput,
 		showResult,
 		advanceToNextQuestion,
-		fireCorrectAnswerConfetti,
+		revealedIndices,
 	]);
 
 	const handleHint = useCallback(() => {
-		if (currentHintLevel >= MAX_HINT_LEVEL || showResult !== null) return;
+		if (
+			currentHintLevel >= MAX_HINT_LEVEL ||
+			showResult !== null ||
+			!currentCountry
+		)
+			return;
 
 		setHintFlash(true);
 		setTimeout(() => {
-			setCurrentHintLevel((prev) => prev + 1);
+			const newHintLevel = currentHintLevel + 1;
+			// Generate new revealed indices, keeping previously revealed ones
+			const newRevealedIndices = getRevealedIndices(
+				currentCountry,
+				newHintLevel,
+				revealedIndices
+			);
+			setRevealedIndices(newRevealedIndices);
+			setCurrentHintLevel(newHintLevel);
 			setHintsUsed((prev) => prev + 1);
 			setHintFlash(false);
 			setTimeout(() => letterBoxRef.current?.focusFirst(), 50);
 		}, 300);
-	}, [currentHintLevel, showResult]);
+	}, [currentHintLevel, showResult, currentCountry, revealedIndices]);
 
 	// Keyboard shortcut for hint
 	useEffect(() => {
@@ -284,6 +310,7 @@ export default function FlagQuizPage() {
 		setTextInputValue("");
 		setCurrentHintLevel(0);
 		setShowResult(null);
+		setRevealedIndices(new Set());
 		inputRef.current?.focus();
 	}, []);
 
@@ -717,10 +744,7 @@ export default function FlagQuizPage() {
 											<LetterBoxInput
 												ref={letterBoxRef}
 												country={currentCountry}
-												revealedIndices={getRevealedIndices(
-													currentCountry,
-													currentHintLevel
-												)}
+												revealedIndices={revealedIndices}
 												userInput={letterBoxInput}
 												onInputChange={setLetterBoxInput}
 												onSubmit={handleSubmit}

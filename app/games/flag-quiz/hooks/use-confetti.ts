@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import confetti from "canvas-confetti";
 
 interface UseConfettiOptions {
@@ -38,74 +38,67 @@ export function useConfetti({
 		};
 	}, []);
 
-	const fireCorrectAnswerConfetti = () => {
-		confetti({
-			particleCount: 50,
-			spread: 60,
-			origin: { y: 0.7 },
-			colors: ["#22c55e", "#16a34a", "#15803d"],
-		});
-	};
+	const fireCelebration = useCallback(
+		(score: number, maxScore: number) => {
+			const percentage = maxScore > 0 ? (score / maxScore) * 100 : 0;
 
-	const fireCelebration = (score: number, maxScore: number) => {
-		const percentage = maxScore > 0 ? (score / maxScore) * 100 : 0;
+			if (percentage < celebrationThreshold || !confettiRef.current) return;
 
-		if (percentage < celebrationThreshold || !confettiRef.current) return;
+			const timer = setTimeout(() => {
+				const card = cardRef.current;
+				let originX = 0.5;
+				let originY = 0.3;
 
-		const timer = setTimeout(() => {
-			const card = cardRef.current;
-			let originX = 0.5;
-			let originY = 0.3;
+				if (card) {
+					const rect = card.getBoundingClientRect();
+					originX = (rect.left + rect.width / 2) / window.innerWidth;
+					originY = rect.top / window.innerHeight;
+				}
 
-			if (card) {
-				const rect = card.getBoundingClientRect();
-				originX = (rect.left + rect.width / 2) / window.innerWidth;
-				originY = rect.top / window.innerHeight;
-			}
-
-			// Main burst
-			confettiRef.current?.({
-				particleCount: 150,
-				spread: 80,
-				origin: { x: originX, y: originY },
-			});
-
-			// Left side burst
-			setTimeout(() => {
+				// Main burst
 				confettiRef.current?.({
-					particleCount: 75,
-					angle: 60,
-					spread: 55,
-					origin: { x: 0, y: 0.6 },
-				});
-			}, 150);
-
-			// Right side burst
-			setTimeout(() => {
-				confettiRef.current?.({
-					particleCount: 75,
-					angle: 120,
-					spread: 55,
-					origin: { x: 1, y: 0.6 },
-				});
-			}, 300);
-
-			// Final burst
-			setTimeout(() => {
-				confettiRef.current?.({
-					particleCount: 100,
-					spread: 100,
+					particleCount: 150,
+					spread: 80,
 					origin: { x: originX, y: originY },
 				});
-			}, 500);
-		}, 400);
 
-		return () => clearTimeout(timer);
-	};
+				// Left side burst
+				setTimeout(() => {
+					confettiRef.current?.({
+						particleCount: 75,
+						angle: 60,
+						spread: 55,
+						origin: { x: 0, y: 0.6 },
+					});
+				}, 150);
+
+				// Right side burst
+				setTimeout(() => {
+					confettiRef.current?.({
+						particleCount: 75,
+						angle: 120,
+						spread: 55,
+						origin: { x: 1, y: 0.6 },
+					});
+				}, 300);
+
+				// Final burst
+				setTimeout(() => {
+					confettiRef.current?.({
+						particleCount: 100,
+						spread: 100,
+						origin: { x: originX, y: originY },
+					});
+				}, 500);
+			}, 400);
+
+			return () => clearTimeout(timer);
+		},
+		[celebrationThreshold]
+	);
 
 	return {
 		cardRef,
-		fireCorrectAnswerConfetti,
 		fireCelebration,
 	};
 }

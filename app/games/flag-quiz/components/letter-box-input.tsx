@@ -60,15 +60,21 @@ export const LetterBoxInput = React.forwardRef<
 				e.preventDefault();
 				const newInput = [...userInput];
 				if (userInput[index]) {
+					// Current box has content - delete it and stay on this box
 					newInput[index] = "";
+					onInputChange(newInput);
 				} else {
+					// Current box is empty - find previous editable box with content
 					const prevIndex = findPrevEditableIndex(index - 1);
 					if (prevIndex >= 0) {
-						inputRefs.current[prevIndex]?.focus();
 						newInput[prevIndex] = "";
+						onInputChange(newInput);
+						// Focus the previous box after clearing it
+						setTimeout(() => {
+							inputRefs.current[prevIndex]?.focus();
+						}, 0);
 					}
 				}
-				onInputChange(newInput);
 				break;
 			}
 			case "Enter":
@@ -102,7 +108,12 @@ export const LetterBoxInput = React.forwardRef<
 
 		if (char) {
 			const nextIndex = findNextEditableIndex(index + 1);
-			if (nextIndex >= 0) inputRefs.current[nextIndex]?.focus();
+			if (nextIndex >= 0) {
+				// Use setTimeout to allow React to re-render before focusing
+				setTimeout(() => {
+					inputRefs.current[nextIndex]?.focus();
+				}, 0);
+			}
 		}
 	};
 
@@ -137,7 +148,7 @@ export const LetterBoxInput = React.forwardRef<
 
 	const getInputClassName = (isRevealed: boolean): string => {
 		const baseClasses = `
-			w-9 h-11 sm:w-10 sm:h-12 text-center text-lg sm:text-xl font-bold uppercase
+			w-7 h-9 sm:w-9 sm:h-11 text-center text-base sm:text-lg font-bold uppercase
 			border-2 rounded-md transition-all duration-200
 			focus:outline-none focus:ring-2 focus:ring-primary/50
 		`;
@@ -155,9 +166,9 @@ export const LetterBoxInput = React.forwardRef<
 	};
 
 	return (
-		<div className="flex flex-wrap justify-center gap-3">
+		<div className="flex flex-wrap justify-center gap-2 sm:gap-3 px-1 py-1 max-w-full overflow-x-auto">
 			{words.map((word, wordIndex) => (
-				<div key={wordIndex} className="flex gap-1">
+				<div key={wordIndex} className="flex gap-0.5 sm:gap-1 shrink-0">
 					{word.map(({ char, globalIndex }) => {
 						const isRevealed = revealedIndices.has(globalIndex);
 						const displayValue = isRevealed

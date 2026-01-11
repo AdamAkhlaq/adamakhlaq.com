@@ -15,43 +15,64 @@ export function getHintScore(hintLevel: number): number {
 }
 
 /**
- * Get deterministic revealed letter indices for a country at a given hint level.
+ * Get revealed letter indices for a country at a given hint level.
+ * Letters are revealed randomly, with the first letter only revealed
+ * when no other letters are available.
  * - hintLevel 0 = text input (no letters revealed)
  * - hintLevel 1 = letter boxes (no letters revealed)
  * - hintLevel 2-5 = letter boxes with 1-4 letters revealed
  */
 export function getRevealedIndices(
 	country: Country,
-	hintLevel: number
+	hintLevel: number,
+	previouslyRevealed?: Set<number>
 ): Set<number> {
 	if (hintLevel <= 1) return new Set();
 
 	const { name } = country;
 
-	// Get all letter indices except spaces and the first character
-	const nonFirstIndices = Array.from(
+	// Start with previously revealed indices or empty set
+	const revealed = new Set(previouslyRevealed ?? []);
+	const targetCount = hintLevel - 1;
+
+	// If we already have enough revealed, return as-is
+	if (revealed.size >= targetCount) {
+		return revealed;
+	}
+
+	// Get all letter indices except spaces
+	const allLetterIndices = Array.from(
 		{ length: name.length },
 		(_, i) => i
-	).filter((i) => name[i] !== " " && i !== 0);
+	).filter((i) => name[i] !== " ");
 
-	// Deterministic shuffle based on country name for consistency
-	const seed = name
-		.split("")
-		.reduce((acc, char) => acc + char.charCodeAt(0), 0);
-	const shuffledIndices = [...nonFirstIndices].sort((a, b) => {
-		const hashA = (seed * (a + 1) * 7) % 100;
-		const hashB = (seed * (b + 1) * 7) % 100;
-		return hashA - hashB;
-	});
+	// Non-first letter indices that haven't been revealed yet
+	const nonFirstAvailable = allLetterIndices.filter(
+		(i) => i !== 0 && !revealed.has(i)
+	);
 
-	// Add first letter at the end if needed (reveals last)
-	const firstCharIndex = name[0] !== " " ? 0 : -1;
-	const allIndices =
-		firstCharIndex >= 0
-			? [...shuffledIndices, firstCharIndex]
-			: shuffledIndices;
+	// First letter index (if not already revealed)
+	const firstLetterIndex = allLetterIndices.find((i) => i === 0);
+	const firstAvailable =
+		firstLetterIndex !== undefined && !revealed.has(firstLetterIndex);
 
-	return new Set(allIndices.slice(0, hintLevel - 1));
+	// Randomly pick letters until we reach target count
+	while (revealed.size < targetCount) {
+		if (nonFirstAvailable.length > 0) {
+			// Pick a random non-first letter
+			const randomIdx = Math.floor(Math.random() * nonFirstAvailable.length);
+			const picked = nonFirstAvailable.splice(randomIdx, 1)[0];
+			revealed.add(picked);
+		} else if (firstAvailable && !revealed.has(0)) {
+			// Only reveal first letter if no other options
+			revealed.add(0);
+		} else {
+			// No more letters to reveal
+			break;
+		}
+	}
+
+	return revealed;
 }
 
 /**
@@ -110,11 +131,9 @@ export function formatTime(seconds: number): string {
  */
 export function buildLetterBoxAnswer(
 	country: Country,
-	hintLevel: number,
+	revealedIndices: Set<number>,
 	letterBoxInput: string[]
 ): string {
-	const revealedIndices = getRevealedIndices(country, hintLevel);
-
 	return country.name
 		.split("")
 		.map((char, i) => {
