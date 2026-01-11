@@ -49,8 +49,9 @@
 	},
 	"pnpm": {
 		"overrides": {
-			"@modelcontextprotocol/sdk": ">=1.24.0",
-			"body-parser": ">=2.2.1"
+			"@modelcontextprotocol/sdk": ">=1.25.2",
+			"body-parser": ">=2.2.1",
+			"qs": ">=6.14.1"
 		}
 	}
 }
