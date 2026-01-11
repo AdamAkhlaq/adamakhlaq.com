@@ -27,7 +27,7 @@ import {
 import { useOperatingSystem } from "@/hooks/use-operating-system";
 
 import { LetterBoxInput, TextInput } from "./components";
-import { useConfetti, useGameTimer } from "./hooks";
+import { useConfetti, useGameTimer, useIOSKeyboardScroll } from "./hooks";
 import {
 	TOTAL_COUNTRIES,
 	MAX_HINT_LEVEL,
@@ -83,10 +83,13 @@ export default function FlagQuizPage() {
 	const inputRef = useRef<HTMLInputElement | null>(null);
 	const letterBoxRef = useRef<LetterBoxInputHandle | null>(null);
 	const previousGameCountriesRef = useRef<Set<string>>(new Set());
+	const flagContainerRef = useRef<HTMLDivElement | null>(null);
 
 	// Hooks
 	const { isMac } = useOperatingSystem();
 	const { cardRef, fireCelebration } = useConfetti();
+	const { handleFocus: handleIOSFocus } =
+		useIOSKeyboardScroll(flagContainerRef);
 
 	// Derived values
 	const currentCountry = questionPool[currentIndex];
@@ -190,7 +193,11 @@ export default function FlagQuizPage() {
 			setTimeRemaining(config.timeLimit);
 		}
 
-		setTimeout(() => inputRef.current?.focus(), 100);
+		// Focus synchronously for mobile Safari compatibility (must be in user gesture chain)
+		// Use requestAnimationFrame to ensure DOM is ready but still within gesture
+		requestAnimationFrame(() => {
+			inputRef.current?.focus();
+		});
 	}, [config, resetQuizState]);
 
 	const advanceToNextQuestion = useCallback(() => {
@@ -571,7 +578,7 @@ export default function FlagQuizPage() {
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, y: -20 }}
-							className="mx-auto max-w-lg space-y-6 min-h-[calc(100dvh-8rem)] flex flex-col justify-center"
+							className="mx-auto max-w-lg space-y-3 sm:space-y-4 md:space-y-6 pb-4"
 						>
 							{/* Progress / Timer Bar */}
 							<div className="space-y-2">
@@ -621,7 +628,10 @@ export default function FlagQuizPage() {
 							</div>
 
 							{/* Flag Display */}
-							<div className="relative h-48 sm:h-56 md:h-64 flex items-center justify-center">
+							<div
+								ref={flagContainerRef}
+								className="relative h-32 sm:h-44 md:h-56 flex items-center justify-center"
+							>
 								<motion.div
 									key={currentCountry.code}
 									initial={{ opacity: 0, scale: 0.95 }}
@@ -632,7 +642,7 @@ export default function FlagQuizPage() {
 									<img
 										src={getFlagUrl(currentCountry.code, 640)}
 										alt="Country flag"
-										className="max-h-48 sm:max-h-56 md:max-h-64 w-auto rounded-lg shadow-md"
+										className="max-h-32 sm:max-h-44 md:max-h-56 w-auto rounded-lg shadow-md"
 										draggable={false}
 									/>
 									{/* Hint button */}
@@ -661,7 +671,7 @@ export default function FlagQuizPage() {
 												: {}
 										}
 										transition={{ duration: 0.3 }}
-										className={`absolute -top-3 -right-3 w-10 h-10 rounded-full flex items-center justify-center bg-white/90 dark:bg-gray-800/90 shadow-lg border border-border/50 transition-colors cursor-pointer ${
+										className={`absolute -top-2 -right-2 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center bg-white/90 dark:bg-gray-800/90 shadow-lg border border-border/50 transition-colors cursor-pointer ${
 											currentHintLevel >= MAX_HINT_LEVEL
 												? "opacity-40 cursor-not-allowed!"
 												: "hover:bg-yellow-100 dark:hover:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400"
@@ -672,10 +682,10 @@ export default function FlagQuizPage() {
 												: `Get a hint (${MAX_HINT_LEVEL - currentHintLevel} left)`
 										}
 									>
-										<Lightbulb className="h-5 w-5" />
+										<Lightbulb className="h-4 w-4 sm:h-5 sm:w-5" />
 									</motion.button>
 									{currentHintLevel > 0 && (
-										<span className="absolute -top-4 -right-4 w-5 h-5 rounded-full bg-yellow-500 text-white text-xs font-bold flex items-center justify-center shadow-sm">
+										<span className="absolute -top-3 -right-3 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-yellow-500 text-white text-[10px] sm:text-xs font-bold flex items-center justify-center shadow-sm">
 											{currentHintLevel}
 										</span>
 									)}
@@ -690,12 +700,12 @@ export default function FlagQuizPage() {
 											initial={{ opacity: 0, y: -10 }}
 											animate={{ opacity: 1, y: 0 }}
 											exit={{ opacity: 0 }}
-											className="rounded-lg bg-destructive/10 border border-destructive/20 p-3 text-center"
+											className="rounded-lg bg-destructive/10 border border-destructive/20 p-2 sm:p-3 text-center"
 										>
-											<p className="text-sm text-muted-foreground">
+											<p className="text-xs sm:text-sm text-muted-foreground">
 												The answer was:
 											</p>
-											<p className="font-semibold text-lg">
+											<p className="font-semibold text-base sm:text-lg">
 												{currentCountry.name}
 											</p>
 										</motion.div>
@@ -703,7 +713,7 @@ export default function FlagQuizPage() {
 							</AnimatePresence>
 
 							{/* Input Area */}
-							<div className="space-y-3">
+							<div className="space-y-2 sm:space-y-3">
 								<AnimatePresence mode="wait">
 									{currentHintLevel === 0 ? (
 										<motion.div
@@ -717,6 +727,7 @@ export default function FlagQuizPage() {
 												value={textInputValue}
 												onChange={setTextInputValue}
 												onSubmit={handleSubmit}
+												onFocus={handleIOSFocus}
 												disabled={isInputDisabled}
 												showResult={showResult}
 												inputRef={inputRef}
@@ -748,6 +759,7 @@ export default function FlagQuizPage() {
 												userInput={letterBoxInput}
 												onInputChange={setLetterBoxInput}
 												onSubmit={handleSubmit}
+												onFocus={handleIOSFocus}
 												disabled={isInputDisabled}
 												showResult={showResult}
 											/>

@@ -10,6 +10,7 @@ interface LetterBoxInputProps {
 	userInput: string[];
 	onInputChange: (newInput: string[]) => void;
 	onSubmit: () => void;
+	onFocus?: () => void;
 	disabled: boolean;
 	showResult: AnswerResult;
 }
@@ -24,6 +25,7 @@ export const LetterBoxInput = React.forwardRef<
 		userInput,
 		onInputChange,
 		onSubmit,
+		onFocus,
 		disabled,
 		showResult,
 	},
@@ -148,7 +150,7 @@ export const LetterBoxInput = React.forwardRef<
 
 	const getInputClassName = (isRevealed: boolean): string => {
 		const baseClasses = `
-			w-7 h-9 sm:w-9 sm:h-11 text-center text-base sm:text-lg font-bold uppercase
+			w-6 h-8 sm:w-9 sm:h-11 text-center text-sm sm:text-lg font-bold uppercase
 			border-2 rounded-md transition-all duration-200
 			focus:outline-none focus:ring-2 focus:ring-primary/50
 		`;
@@ -166,7 +168,7 @@ export const LetterBoxInput = React.forwardRef<
 	};
 
 	return (
-		<div className="flex flex-wrap justify-center gap-2 sm:gap-3 px-1 py-1 max-w-full overflow-x-auto">
+		<div className="flex flex-wrap justify-center gap-2 sm:gap-3 px-4 py-1 max-w-full overflow-x-auto">
 			{words.map((word, wordIndex) => (
 				<div key={wordIndex} className="flex gap-0.5 sm:gap-1 shrink-0">
 					{word.map(({ char, globalIndex }) => {
@@ -186,6 +188,7 @@ export const LetterBoxInput = React.forwardRef<
 								enterKeyHint="next"
 								value={displayValue}
 								onChange={(e) => handleInput(globalIndex, e.target.value)}
+								onFocus={onFocus}
 								onKeyDown={(e) => handleKeyDown(globalIndex, e)}
 								disabled={disabled || isRevealed}
 								maxLength={2}

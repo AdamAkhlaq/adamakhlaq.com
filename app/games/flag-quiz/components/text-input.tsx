@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, type RefObject } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 import type { AnswerResult } from "../types";
 
 interface TextInputProps {
 	value: string;
 	onChange: (value: string) => void;
 	onSubmit: () => void;
+	onFocus?: () => void;
 	disabled: boolean;
 	showResult: AnswerResult;
 	inputRef: RefObject<HTMLInputElement | null>;
@@ -17,14 +18,29 @@ export function TextInput({
 	value,
 	onChange,
 	onSubmit,
+	onFocus,
 	disabled,
 	showResult,
 	inputRef,
 	autoFocus,
 }: TextInputProps) {
+	const hasAttemptedFocus = useRef(false);
+
 	useEffect(() => {
-		if (autoFocus) inputRef.current?.focus();
+		if (autoFocus && !hasAttemptedFocus.current) {
+			hasAttemptedFocus.current = true;
+			// Attempt focus - works on desktop, may not work on mobile Safari
+			// if not triggered by user gesture
+			inputRef.current?.focus({ preventScroll: true });
+		}
 	}, [autoFocus, inputRef]);
+
+	// Reset focus attempt tracker when value is cleared (new question)
+	useEffect(() => {
+		if (value === "") {
+			hasAttemptedFocus.current = false;
+		}
+	}, [value]);
 
 	const getInputClassName = (): string => {
 		const baseClasses = `
@@ -48,9 +64,10 @@ export function TextInput({
 			type="text"
 			inputMode="text"
 			enterKeyHint="send"
-			placeholder="Type the country name..."
+			placeholder="Tap here to type..."
 			value={value}
 			onChange={(e) => onChange(e.target.value)}
+			onFocus={onFocus}
 			onKeyDown={(e) => {
 				if (e.key === "Enter") {
 					e.preventDefault();
