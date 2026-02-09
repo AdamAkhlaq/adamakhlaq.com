@@ -21,6 +21,12 @@ export default function Home() {
 						>
 							Games
 						</Link>
+						<Link
+							href="/links"
+							className="font-pixel text-sm font-bold text-foreground/80 hover:text-foreground transition-colors"
+						>
+							Links
+						</Link>
 					</div>
 					<div className="absolute right-0">
 						<ThemeToggle />
