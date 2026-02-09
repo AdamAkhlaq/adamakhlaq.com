@@ -1,9 +1,13 @@
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { AsciiWave } from "@/components/ascii-wave";
 
 export default function Home() {
 	return (
-		<div className="min-h-svh bg-background">
+		<div className="min-h-svh bg-background relative">
+			<div className="fixed inset-6 sm:inset-8 md:inset-10 overflow-hidden">
+				<AsciiWave />
+			</div>
 			<div className="fixed inset-6 sm:inset-8 md:inset-10 z-10 border-4 border-black dark:border-white pointer-events-none" />
 
 			<div className="relative z-20 min-h-svh flex flex-col px-10 py-8 sm:px-14 sm:py-12 md:px-16 md:py-14">
