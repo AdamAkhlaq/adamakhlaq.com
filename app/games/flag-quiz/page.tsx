@@ -13,6 +13,7 @@ import {
 	Send,
 } from "lucide-react";
 
+import { SimpleNavbar } from "@/components/simple-navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -328,7 +329,8 @@ export default function FlagQuizPage() {
 
 	return (
 		<div className="min-h-screen bg-background">
-			<main className="container mx-auto px-4 pt-16 pb-6 sm:py-8">
+			<SimpleNavbar />
+			<main className="container mx-auto px-4 pt-4 pb-6 sm:py-8">
 				<AnimatePresence mode="wait">
 					{gameStatus === "setup" && (
 						<motion.div
