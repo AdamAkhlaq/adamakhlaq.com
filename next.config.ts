@@ -9,9 +9,14 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**",
+        hostname: "flagcdn.com",
       },
     ],
+  },
+
+  // Optimize barrel imports for tree-shaking
+  experimental: {
+    optimizePackageImports: ["lucide-react"],
   },
 
   // Proxy DataFast Analytics through own domain to bypass ad blockers

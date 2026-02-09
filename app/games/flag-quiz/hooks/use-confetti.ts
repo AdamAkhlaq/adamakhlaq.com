@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
-import confetti from "canvas-confetti";
+import { useCallback, useRef } from "react";
+import type confettiModule from "canvas-confetti";
 
 interface UseConfettiOptions {
 	/** Threshold percentage (0-100) to trigger celebration */
@@ -11,11 +11,15 @@ interface UseConfettiOptions {
 export function useConfetti({
 	celebrationThreshold = 50,
 }: UseConfettiOptions = {}) {
-	const confettiRef = useRef<ReturnType<typeof confetti.create> | null>(null);
+	const confettiRef = useRef<ReturnType<typeof confettiModule.create> | null>(null);
+	const canvasRef = useRef<HTMLCanvasElement | null>(null);
 	const cardRef = useRef<HTMLDivElement | null>(null);
 
-	// Setup confetti canvas on mount
-	useEffect(() => {
+	const ensureConfetti = useCallback(async () => {
+		if (confettiRef.current) return confettiRef.current;
+
+		const { default: confetti } = await import("canvas-confetti");
+
 		const canvas = document.createElement("canvas");
 		canvas.style.cssText = `
 			position: fixed;
@@ -27,24 +31,25 @@ export function useConfetti({
 			z-index: 9999;
 		`;
 		document.body.appendChild(canvas);
+		canvasRef.current = canvas;
 
 		confettiRef.current = confetti.create(canvas, {
 			resize: true,
 			useWorker: false,
 		});
 
-		return () => {
-			document.body.removeChild(canvas);
-		};
+		return confettiRef.current;
 	}, []);
 
 	const fireCelebration = useCallback(
 		(score: number, maxScore: number) => {
 			const percentage = maxScore > 0 ? (score / maxScore) * 100 : 0;
 
-			if (percentage < celebrationThreshold || !confettiRef.current) return;
+			if (percentage < celebrationThreshold) return;
 
-			const timer = setTimeout(() => {
+			const timer = setTimeout(async () => {
+				const fire = await ensureConfetti();
+
 				const card = cardRef.current;
 				let originX = 0.5;
 				let originY = 0.3;
@@ -56,7 +61,7 @@ export function useConfetti({
 				}
 
 				// Main burst
-				confettiRef.current?.({
+				fire({
 					particleCount: 150,
 					spread: 80,
 					origin: { x: originX, y: originY },
@@ -64,7 +69,7 @@ export function useConfetti({
 
 				// Left side burst
 				setTimeout(() => {
-					confettiRef.current?.({
+					fire({
 						particleCount: 75,
 						angle: 60,
 						spread: 55,
@@ -74,7 +79,7 @@ export function useConfetti({
 
 				// Right side burst
 				setTimeout(() => {
-					confettiRef.current?.({
+					fire({
 						particleCount: 75,
 						angle: 120,
 						spread: 55,
@@ -84,7 +89,7 @@ export function useConfetti({
 
 				// Final burst
 				setTimeout(() => {
-					confettiRef.current?.({
+					fire({
 						particleCount: 100,
 						spread: 100,
 						origin: { x: originX, y: originY },
@@ -92,9 +97,17 @@ export function useConfetti({
 				}, 500);
 			}, 400);
 
-			return () => clearTimeout(timer);
+			return () => {
+				clearTimeout(timer);
+				// Cleanup canvas when celebration ends
+				if (canvasRef.current) {
+					document.body.removeChild(canvasRef.current);
+					canvasRef.current = null;
+					confettiRef.current = null;
+				}
+			};
 		},
-		[celebrationThreshold]
+		[celebrationThreshold, ensureConfetti]
 	);
 
 	return {
