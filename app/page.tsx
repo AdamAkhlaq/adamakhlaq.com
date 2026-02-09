@@ -20,6 +20,12 @@ export default function Home() {
 							Home
 						</Link>
 						<Link
+							href="/projects"
+							className="font-pixel text-sm font-bold text-foreground/80 hover:text-foreground transition-colors"
+						>
+							Projects
+						</Link>
+						<Link
 							href="/games"
 							className="font-pixel text-sm font-bold text-foreground/80 hover:text-foreground transition-colors"
 						>

@@ -1,23 +1,23 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { socialLinks } from "@/data/links";
+import { projects } from "@/data/projects";
 
 export const metadata: Metadata = {
-	title: "Links | Adam Akhlaq",
-	description: "Find me on Instagram, TikTok, YouTube, and X.",
+	title: "Projects | Adam Akhlaq",
+	description: "Things I've built.",
 	openGraph: {
-		title: "Links | Adam Akhlaq",
-		description: "Find me on Instagram, TikTok, YouTube, and X.",
+		title: "Projects | Adam Akhlaq",
+		description: "Things I've built.",
 	},
 	twitter: {
 		card: "summary",
-		title: "Links | Adam Akhlaq",
-		description: "Find me on Instagram, TikTok, YouTube, and X.",
+		title: "Projects | Adam Akhlaq",
+		description: "Things I've built.",
 	},
 };
 
-export default function LinksPage() {
+export default function ProjectsPage() {
 	return (
 		<div className="min-h-svh bg-background">
 			<div className="fixed inset-6 sm:inset-8 md:inset-10 z-10 border-4 border-black dark:border-white pointer-events-none" />
@@ -56,23 +56,48 @@ export default function LinksPage() {
 				</nav>
 
 				<div className="flex-1 flex items-center justify-center">
-					<div className="w-full max-w-sm flex flex-col items-center gap-8">
+					<div className="w-full max-w-lg flex flex-col items-center gap-8">
 						<h1 className="font-pixel text-3xl sm:text-4xl font-bold text-foreground">
-							@adamakhlaq
+							Projects
 						</h1>
 
 						<div className="w-full flex flex-col gap-3">
-							{socialLinks.map((link) => (
-								<a
-									key={link.id}
-									href={link.url}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="block w-full border-2 border-foreground py-4 text-center font-pixel text-foreground bg-background hover:bg-foreground hover:text-background transition-all duration-150 active:scale-[0.98]"
+							{projects.map((project) => (
+								<div
+									key={project.id}
+									className="w-full border-2 border-foreground p-5"
 								>
-									<span className="block text-sm font-bold uppercase">{link.label}</span>
-									<span className="block text-xs opacity-60">{link.handle}</span>
-								</a>
+									<h2 className="font-pixel text-sm font-bold uppercase text-foreground">
+										{project.title}
+									</h2>
+									<p className="mt-1 font-pixel text-xs text-foreground/60">
+										{project.description}
+									</p>
+									{(project.url || project.repo) && (
+										<div className="mt-3 flex items-center gap-4">
+											{project.url && (
+												<a
+													href={project.url}
+													target="_blank"
+													rel="noopener noreferrer"
+													className="font-pixel text-xs font-bold text-foreground/80 hover:text-foreground transition-colors underline underline-offset-2"
+												>
+													Visit
+												</a>
+											)}
+											{project.repo && (
+												<a
+													href={project.repo}
+													target="_blank"
+													rel="noopener noreferrer"
+													className="font-pixel text-xs font-bold text-foreground/80 hover:text-foreground transition-colors underline underline-offset-2"
+												>
+													Source
+												</a>
+											)}
+										</div>
+									)}
+								</div>
 							))}
 						</div>
 					</div>
