@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
-import { CommandPaletteProvider } from "@/components/command-palette-provider";
+import { Geist, Geist_Mono } from "next/font/google";
+import { GeistPixelSquare } from "geist/font/pixel";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
@@ -12,11 +12,6 @@ const geist = Geist({
 
 const geistMono = Geist_Mono({
 	variable: "--font-geist-mono",
-	subsets: ["latin"],
-});
-
-const inter = Inter({
-	variable: "--font-inter",
 	subsets: ["latin"],
 });
 
@@ -63,17 +58,23 @@ export const metadata: Metadata = {
 	metadataBase: new URL("https://adamakhlaq.com"),
 };
 
+// Inline script to prevent FOUC by reading theme from localStorage before first paint.
+const themeScript = `(function(){try{var t=localStorage.getItem("theme");if(t==="light")document.documentElement.classList.remove("dark");else document.documentElement.classList.add("dark")}catch(e){}})()`;
+
 export default function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
+		<html lang="en" className="dark" suppressHydrationWarning>
 			<head>
 				<meta
 					name="viewport"
 					content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
+				/>
+				<script
+					dangerouslySetInnerHTML={{ __html: themeScript }}
 				/>
 				<Script
 					data-website-id={process.env.NEXT_PUBLIC_DATAFAST_WEBSITE_ID}
@@ -84,11 +85,9 @@ export default function RootLayout({
 				/>
 			</head>
 			<body
-				className={`${geist.variable} ${geistMono.variable} ${inter.variable} antialiased`}
+				className={`${geist.variable} ${geistMono.variable} ${GeistPixelSquare.variable} antialiased`}
 			>
-				<ThemeProvider>
-					<CommandPaletteProvider>{children}</CommandPaletteProvider>
-				</ThemeProvider>
+				<ThemeProvider>{children}</ThemeProvider>
 			</body>
 		</html>
 	);
