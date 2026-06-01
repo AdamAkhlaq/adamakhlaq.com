@@ -25,10 +25,10 @@ export default function FlagQuizError({
 						Try Again
 					</button>
 					<Link
-						href="/games"
+						href="/"
 						className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
 					>
-						Back to Games
+						Back home
 					</Link>
 				</div>
 			</div>

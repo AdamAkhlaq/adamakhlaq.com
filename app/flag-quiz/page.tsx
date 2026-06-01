@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import type { Metadata } from "next";
-import { SimpleNavbar } from "@/components/simple-navbar";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 export const metadata: Metadata = {
 	title: "Flag Quiz | Adam Akhlaq",
@@ -25,7 +26,15 @@ const FlagQuizGame = dynamic(() => import("./flag-quiz-game"), {
 export default function FlagQuizPage() {
 	return (
 		<div className="min-h-screen bg-background">
-			<SimpleNavbar />
+			<div className="mx-auto w-full max-w-2xl px-4 pt-4 sm:px-6 sm:pt-6">
+				<Link
+					href="/"
+					className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+				>
+					<ArrowLeft className="size-4" aria-hidden />
+					Adam Akhlaq
+				</Link>
+			</div>
 			<main className="container mx-auto px-4 pt-4 pb-6 sm:py-8">
 				<FlagQuizGame />
 			</main>

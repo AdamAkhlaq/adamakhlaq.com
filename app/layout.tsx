@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
-import { GeistPixelSquare } from "geist/font/pixel";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
@@ -24,7 +23,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
 	title: "Adam Akhlaq",
 	description:
-		"Full-stack software engineer and indie hacker. I build products that matter to me, whether they're useful tools or just fun experiments.",
+		"Full-stack software engineer. I build products that matter to me, whether they're useful tools or just fun experiments.",
 	keywords: [
 		"Adam Akhlaq",
 		"software engineer",
@@ -40,14 +39,14 @@ export const metadata: Metadata = {
 		url: "https://adamakhlaq.com",
 		title: "Adam Akhlaq",
 		description:
-			"Full-stack software engineer and indie hacker. I build products that matter to me, whether they're useful tools or just fun experiments.",
+			"Full-stack software engineer. I build products that matter to me, whether they're useful tools or just fun experiments.",
 		siteName: "Adam Akhlaq",
 	},
 	twitter: {
 		card: "summary_large_image",
 		title: "Adam Akhlaq",
 		description:
-			"Full-stack software engineer and indie hacker. I build products that matter to me, whether they're useful tools or just fun experiments.",
+			"Full-stack software engineer. I build products that matter to me, whether they're useful tools or just fun experiments.",
 		creator: "@adamakhlaq",
 	},
 	robots: {
@@ -87,7 +86,7 @@ export default function RootLayout({
 				/>
 			</head>
 			<body
-				className={`${geist.variable} ${geistMono.variable} ${GeistPixelSquare.variable} antialiased`}
+				className={`${geist.variable} ${geistMono.variable} antialiased`}
 			>
 				<ThemeProvider>{children}</ThemeProvider>
 			</body>

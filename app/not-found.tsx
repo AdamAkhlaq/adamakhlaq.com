@@ -1,21 +1,17 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
 	return (
-		<div className="min-h-svh bg-background flex items-center justify-center px-6">
-			<div className="text-center space-y-6">
-				<h1 className="font-pixel text-6xl sm:text-7xl font-bold text-foreground">
+		<div className="flex min-h-svh items-center justify-center bg-background px-6">
+			<div className="flex flex-col items-center gap-6 text-center">
+				<h1 className="text-6xl font-bold tracking-tight text-foreground sm:text-7xl">
 					404
 				</h1>
-				<p className="font-pixel text-sm text-foreground/60">
-					Page not found.
-				</p>
-				<Link
-					href="/"
-					className="inline-block font-pixel text-sm font-bold border-2 border-foreground px-6 py-3 text-foreground bg-background hover:bg-foreground hover:text-background transition-all duration-150"
-				>
-					Go Home
-				</Link>
+				<p className="text-muted-foreground">Page not found.</p>
+				<Button asChild variant="outline">
+					<Link href="/">Go home</Link>
+				</Button>
 			</div>
 		</div>
 	);

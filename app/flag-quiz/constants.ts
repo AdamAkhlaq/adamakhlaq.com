@@ -1,4 +1,5 @@
 import type { Continent } from "@/data/countries";
+import { SITE_GRADIENT } from "@/lib/gradients";
 
 export const TOTAL_COUNTRIES = 195;
 export const MAX_HINT_LEVEL = 5;
@@ -26,8 +27,7 @@ export const REGION_DATA: {
 		id: "all",
 		name: "All Countries",
 		icon: "🌍",
-		pattern:
-			"radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.15) 0%, transparent 50%)",
+		pattern: SITE_GRADIENT,
 	},
 	{
 		id: "Africa",

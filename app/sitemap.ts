@@ -11,28 +11,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
 			priority: 1.0,
 		},
 		{
-			url: `${baseUrl}/projects`,
-			lastModified: new Date(),
-			changeFrequency: "monthly",
-			priority: 0.9,
-		},
-		{
-			url: `${baseUrl}/games`,
-			lastModified: new Date(),
-			changeFrequency: "monthly",
-			priority: 0.8,
-		},
-		{
-			url: `${baseUrl}/games/flag-quiz`,
+			url: `${baseUrl}/flag-quiz`,
 			lastModified: new Date(),
 			changeFrequency: "monthly",
 			priority: 0.7,
-		},
-		{
-			url: `${baseUrl}/links`,
-			lastModified: new Date(),
-			changeFrequency: "monthly",
-			priority: 0.8,
 		},
 	];
 }
