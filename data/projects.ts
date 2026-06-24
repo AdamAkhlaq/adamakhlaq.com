@@ -37,6 +37,16 @@ export interface Project {
  */
 export const projects: Project[] = [
 	{
+		id: "clone-anywhere-for-github",
+		title: "Clone Anywhere for Github",
+		description:
+			"Clone any GitHub repo into VS Code, Cursor, Windsurf, VSCodium, or Insiders — or download it as a .zip. One click, no terminal.",
+		icon: "/clone-anywhere-github.png",
+		url: "https://chromewebstore.google.com/detail/clone-anywhere-for-github/effhdkonnknoebahhnnciakckbbfmcpi",
+		year: "2025",
+		iconClassName: "size-8",
+	},
+	{
 		id: "flag-quiz",
 		title: "Flag Quiz",
 		description: "Test your knowledge of world flags.",
