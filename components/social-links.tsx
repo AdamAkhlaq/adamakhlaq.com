@@ -36,7 +36,12 @@ function YouTubeIcon({ className }: IconProps) {
 
 function TikTokIcon({ className }: IconProps) {
 	return (
-		<svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
+		<svg
+			viewBox="0 0 24 24"
+			fill="currentColor"
+			className={className}
+			aria-hidden
+		>
 			<path d={brandIconPaths.tiktok} />
 		</svg>
 	);
@@ -44,7 +49,12 @@ function TikTokIcon({ className }: IconProps) {
 
 function XIcon({ className }: IconProps) {
 	return (
-		<svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
+		<svg
+			viewBox="0 0 24 24"
+			fill="currentColor"
+			className={className}
+			aria-hidden
+		>
 			<path d={brandIconPaths.x} />
 		</svg>
 	);
@@ -60,7 +70,12 @@ function LinkedInIcon({ className }: IconProps) {
 
 function GitHubIcon({ className }: IconProps) {
 	return (
-		<svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
+		<svg
+			viewBox="0 0 24 24"
+			fill="currentColor"
+			className={className}
+			aria-hidden
+		>
 			<path d={brandIconPaths.github} />
 		</svg>
 	);

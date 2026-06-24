@@ -12,7 +12,12 @@ function Glyph({ id, className }: { id: string; className?: string }) {
 	const d = brandIconPaths[id];
 	if (!d) return null;
 	return (
-		<svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
+		<svg
+			viewBox="0 0 24 24"
+			fill="currentColor"
+			className={className}
+			aria-hidden
+		>
 			<path d={d} />
 		</svg>
 	);

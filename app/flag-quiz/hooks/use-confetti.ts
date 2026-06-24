@@ -11,7 +11,9 @@ interface UseConfettiOptions {
 export function useConfetti({
 	celebrationThreshold = 50,
 }: UseConfettiOptions = {}) {
-	const confettiRef = useRef<ReturnType<typeof confettiModule.create> | null>(null);
+	const confettiRef = useRef<ReturnType<typeof confettiModule.create> | null>(
+		null,
+	);
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
 	const cardRef = useRef<HTMLDivElement | null>(null);
 
@@ -107,7 +109,7 @@ export function useConfetti({
 				}
 			};
 		},
-		[celebrationThreshold, ensureConfetti]
+		[celebrationThreshold, ensureConfetti],
 	);
 
 	return {

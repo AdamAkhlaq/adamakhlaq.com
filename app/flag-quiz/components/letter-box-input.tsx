@@ -29,7 +29,7 @@ export const LetterBoxInput = React.forwardRef<
 		disabled,
 		showResult,
 	},
-	ref
+	ref,
 ) {
 	const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 	const { name } = country;
@@ -41,7 +41,7 @@ export const LetterBoxInput = React.forwardRef<
 			}
 			return -1;
 		},
-		[name, revealedIndices]
+		[name, revealedIndices],
 	);
 
 	const findPrevEditableIndex = useCallback(
@@ -51,7 +51,7 @@ export const LetterBoxInput = React.forwardRef<
 			}
 			return -1;
 		},
-		[name, revealedIndices]
+		[name, revealedIndices],
 	);
 
 	const handleKeyDown = (index: number, e: React.KeyboardEvent) => {

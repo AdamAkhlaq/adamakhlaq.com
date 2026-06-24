@@ -25,7 +25,7 @@ export function getHintScore(hintLevel: number): number {
 export function getRevealedIndices(
 	country: Country,
 	hintLevel: number,
-	previouslyRevealed?: Set<number>
+	previouslyRevealed?: Set<number>,
 ): Set<number> {
 	if (hintLevel <= 1) return new Set();
 
@@ -43,12 +43,12 @@ export function getRevealedIndices(
 	// Get all letter indices except spaces
 	const allLetterIndices = Array.from(
 		{ length: name.length },
-		(_, i) => i
+		(_, i) => i,
 	).filter((i) => name[i] !== " ");
 
 	// Non-first letter indices that haven't been revealed yet
 	const nonFirstAvailable = allLetterIndices.filter(
-		(i) => i !== 0 && !revealed.has(i)
+		(i) => i !== 0 && !revealed.has(i),
 	);
 
 	// First letter index (if not already revealed)
@@ -82,7 +82,7 @@ export function getRevealedIndices(
 export function getWeightedPool(
 	sourcePool: Country[],
 	limit: number,
-	previousCodes: Set<string>
+	previousCodes: Set<string>,
 ): Country[] {
 	if (previousCodes.size === 0 || limit >= sourcePool.length) {
 		return shuffleArray(sourcePool).slice(0, limit);
@@ -132,7 +132,7 @@ export function formatTime(seconds: number): string {
 export function buildLetterBoxAnswer(
 	country: Country,
 	revealedIndices: Set<number>,
-	letterBoxInput: string[]
+	letterBoxInput: string[],
 ): string {
 	return country.name
 		.split("")

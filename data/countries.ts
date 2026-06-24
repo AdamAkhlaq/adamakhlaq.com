@@ -439,7 +439,7 @@ export function checkAnswer(country: Country, answer: string): boolean {
 	if (country.name.toLowerCase() === normalizedAnswer) return true;
 	if (country.alternateNames) {
 		return country.alternateNames.some(
-			(alt) => alt.toLowerCase() === normalizedAnswer
+			(alt) => alt.toLowerCase() === normalizedAnswer,
 		);
 	}
 	return false;

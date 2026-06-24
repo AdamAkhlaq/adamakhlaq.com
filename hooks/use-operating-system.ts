@@ -3,16 +3,16 @@
 import { useSyncExternalStore } from "react";
 
 function getIsMac() {
-  if (typeof window === "undefined") return false;
-  return navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+	if (typeof window === "undefined") return false;
+	return navigator.platform.toUpperCase().indexOf("MAC") >= 0;
 }
 
 function subscribe() {
-  return () => {};
+	return () => {};
 }
 
 export function useOperatingSystem() {
-  const isMac = useSyncExternalStore(subscribe, getIsMac, () => false);
+	const isMac = useSyncExternalStore(subscribe, getIsMac, () => false);
 
-  return { isMac, mounted: true };
+	return { isMac, mounted: true };
 }

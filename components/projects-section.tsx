@@ -25,7 +25,11 @@ function ProjectRow({ project }: { project: Project }) {
 		"group flex items-center justify-between gap-4 py-4 transition-colors hover:text-foreground";
 
 	if (!project.url) {
-		return <div className="flex items-center justify-between gap-4 py-4">{inner}</div>;
+		return (
+			<div className="flex items-center justify-between gap-4 py-4">
+				{inner}
+			</div>
+		);
 	}
 
 	if (project.url.startsWith("/")) {
@@ -37,7 +41,11 @@ function ProjectRow({ project }: { project: Project }) {
 	}
 
 	return (
-		<a href={project.url} {...externalLinkProps(project.url)} className={className}>
+		<a
+			href={project.url}
+			{...externalLinkProps(project.url)}
+			className={className}
+		>
 			{inner}
 		</a>
 	);

@@ -77,7 +77,7 @@ export default function FlagQuizGame() {
 	const [timeRemaining, setTimeRemaining] = useState(0);
 	const [hintFlash, setHintFlash] = useState(false);
 	const [revealedIndices, setRevealedIndices] = useState<Set<number>>(
-		new Set()
+		new Set(),
 	);
 
 	// Refs
@@ -178,7 +178,7 @@ export default function FlagQuizGame() {
 				? getWeightedPool(
 						sourcePool,
 						Math.min(config.countLimit, sourcePool.length),
-						previousGameCountriesRef.current
+						previousGameCountriesRef.current,
 					)
 				: shuffleArray(sourcePool);
 
@@ -250,7 +250,7 @@ export default function FlagQuizGame() {
 						const newRevealedIndices = getRevealedIndices(
 							currentCountry,
 							newHintLevel,
-							revealedIndices
+							revealedIndices,
 						);
 						setRevealedIndices(newRevealedIndices);
 						setCurrentHintLevel(newHintLevel);
@@ -288,7 +288,7 @@ export default function FlagQuizGame() {
 			const newRevealedIndices = getRevealedIndices(
 				currentCountry,
 				newHintLevel,
-				revealedIndices
+				revealedIndices,
 			);
 			setRevealedIndices(newRevealedIndices);
 			setCurrentHintLevel(newHintLevel);
@@ -418,9 +418,7 @@ export default function FlagQuizGame() {
 												</div>
 											</motion.div>
 										)}
-										<span className="text-2xl mb-2 block">
-											{region.icon}
-										</span>
+										<span className="text-2xl mb-2 block">{region.icon}</span>
 										<p className="font-medium text-sm">{region.name}</p>
 										<p className="text-xs text-muted-foreground">
 											{count} {count === 1 ? "country" : "countries"}
@@ -476,9 +474,7 @@ export default function FlagQuizGame() {
 													</motion.div>
 												)}
 												<p className="text-lg font-bold">{count}</p>
-												<p className="text-xs text-muted-foreground">
-													flags
-												</p>
+												<p className="text-xs text-muted-foreground">flags</p>
 											</motion.button>
 										);
 									})}
@@ -695,22 +691,21 @@ export default function FlagQuizGame() {
 
 					{/* Answer Display (when giving up) */}
 					<AnimatePresence>
-						{showResult === "wrong" &&
-							currentHintLevel >= MAX_HINT_LEVEL && (
-								<motion.div
-									initial={{ opacity: 0, y: -10 }}
-									animate={{ opacity: 1, y: 0 }}
-									exit={{ opacity: 0 }}
-									className="rounded-lg bg-destructive/10 border border-destructive/20 p-2 sm:p-3 text-center"
-								>
-									<p className="text-xs sm:text-sm text-muted-foreground">
-										The answer was:
-									</p>
-									<p className="font-semibold text-base sm:text-lg">
-										{currentCountry.name}
-									</p>
-								</motion.div>
-							)}
+						{showResult === "wrong" && currentHintLevel >= MAX_HINT_LEVEL && (
+							<motion.div
+								initial={{ opacity: 0, y: -10 }}
+								animate={{ opacity: 1, y: 0 }}
+								exit={{ opacity: 0 }}
+								className="rounded-lg bg-destructive/10 border border-destructive/20 p-2 sm:p-3 text-center"
+							>
+								<p className="text-xs sm:text-sm text-muted-foreground">
+									The answer was:
+								</p>
+								<p className="font-semibold text-base sm:text-lg">
+									{currentCountry.name}
+								</p>
+							</motion.div>
+						)}
 					</AnimatePresence>
 
 					{/* Input Area */}

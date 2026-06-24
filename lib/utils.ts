@@ -2,7 +2,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+	return twMerge(clsx(inputs));
 }
 
 /**
@@ -10,7 +10,7 @@ export function cn(...inputs: ClassValue[]) {
  * Returns an empty object for internal/relative URLs.
  */
 export function externalLinkProps(url: string) {
-  return url.startsWith("http")
-    ? ({ target: "_blank", rel: "noopener noreferrer" } as const)
-    : {};
+	return url.startsWith("http")
+		? ({ target: "_blank", rel: "noopener noreferrer" } as const)
+		: {};
 }

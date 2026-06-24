@@ -17,7 +17,9 @@ export default function Home() {
 			</Section>
 
 			<Section title="Writing">
-				<p className="text-sm text-muted-foreground sm:text-base">Coming soon.</p>
+				<p className="text-sm text-muted-foreground sm:text-base">
+					Coming soon.
+				</p>
 			</Section>
 		</div>
 	);

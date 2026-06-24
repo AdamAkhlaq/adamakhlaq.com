@@ -74,9 +74,7 @@ export default function RootLayout({
 	return (
 		<html lang="en" className="dark" suppressHydrationWarning>
 			<head>
-				<script
-					dangerouslySetInnerHTML={{ __html: themeScript }}
-				/>
+				<script dangerouslySetInnerHTML={{ __html: themeScript }} />
 				<Script
 					data-website-id={process.env.NEXT_PUBLIC_DATAFAST_WEBSITE_ID}
 					data-domain="www.adamakhlaq.com"
@@ -85,9 +83,7 @@ export default function RootLayout({
 					strategy="afterInteractive"
 				/>
 			</head>
-			<body
-				className={`${geist.variable} ${geistMono.variable} antialiased`}
-			>
+			<body className={`${geist.variable} ${geistMono.variable} antialiased`}>
 				<ThemeProvider>{children}</ThemeProvider>
 			</body>
 		</html>
