@@ -12,7 +12,7 @@ type Theme = "light" | "dark";
 const ThemeContext = createContext<{
 	theme: Theme;
 	toggleTheme: () => void;
-}>({ theme: "dark", toggleTheme: () => {} });
+}>({ theme: "light", toggleTheme: () => {} });
 
 // Same-tab listeners are notified via this custom event; the native "storage"
 // event only fires in other tabs.
@@ -28,14 +28,14 @@ function subscribe(callback: () => void) {
 }
 
 // On the client the current theme comes from localStorage. On the server (and
-// during hydration) it falls back to "dark", matching the inline bootstrap
+// during hydration) it falls back to "light", matching the inline bootstrap
 // script in the root layout that sets the initial <html> class before paint.
 function getSnapshot(): Theme {
-	return localStorage.getItem("theme") === "light" ? "light" : "dark";
+	return localStorage.getItem("theme") === "dark" ? "dark" : "light";
 }
 
 function getServerSnapshot(): Theme {
-	return "dark";
+	return "light";
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {

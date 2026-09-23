@@ -1,27 +1,27 @@
 export interface Role {
 	/** Unique key (kebab-case), e.g. "bp". */
 	id: string;
-	/** Company name — shown as the entry title. */
+	/** Company name, shown as the entry title. */
 	company: string;
-	/** Your role — shown as the subtitle under the company. */
+	/** Your role, shown under the company. */
 	title: string;
-	/** Free-form date string shown on the right, e.g. "2023 — Present". */
+	/** Free-form date string shown in the left gutter, e.g. "2023 - Present". */
 	dateRange: string;
-	/** Favicon / logo URL shown as the rounded-square icon. */
-	icon: string;
-	/** Shown above the description when the entry is expanded. Optional. */
+	/** Favicon / logo URL shown in a small tile before the company name. Optional. */
+	icon?: string;
+	/** Optional Tailwind size for the icon inside its tile, e.g. "size-5". */
+	iconClassName?: string;
+	/** Shown under the date range in the gutter. Optional. */
 	location?: string;
 	/**
-	 * One or more short paragraphs describing the role, shown when expanded.
+	 * One or more short paragraphs describing the role.
 	 * Each string renders as its own paragraph.
 	 */
 	details: string[];
-	/** Optional Tailwind size for the icon inside its tile, e.g. "size-9". */
-	iconClassName?: string;
 }
 
 /**
- * Work history — newest first. To add a role, copy the template below,
+ * Work history, newest first. To add a role, copy the template below,
  * uncomment it, and fill in the fields. Tip for the icon: the favicon
  * service "https://icons.duckduckgo.com/ip3/<domain>.ico" works well.
  *
@@ -29,11 +29,11 @@ export interface Role {
  * 	id: "company-id",
  * 	company: "Company",
  * 	title: "Your Title",
- * 	dateRange: "2025 — Present",
+ * 	dateRange: "2025 - Present",
  * 	icon: "https://icons.duckduckgo.com/ip3/example.com.ico",
+ * 	iconClassName: "size-5",          // optional, only if the logo looks small
  * 	location: "City, Country",       // optional
  * 	details: ["What you do here."],
- * 	iconClassName: "size-9",          // optional — only if the logo looks small
  * },
  */
 export const roles: Role[] = [
@@ -41,12 +41,12 @@ export const roles: Role[] = [
 		id: "bp",
 		company: "bp",
 		title: "Software Engineer",
-		dateRange: "2023 — Present",
+		dateRange: "2023 - Present",
 		icon: "/bp.svg",
+		iconClassName: "size-5",
 		location: "London, UK",
 		details: [
 			"Currently redeveloping how bp's UK retail runs. Responsible for engineering point-of-sale software where reliability, scale, and compliance are non-negotiable.",
 		],
-		iconClassName: "size-9",
 	},
 ];

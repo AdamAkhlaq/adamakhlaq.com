@@ -6,8 +6,8 @@ export function Section({
 	children: React.ReactNode;
 }) {
 	return (
-		<section className="flex flex-col gap-1">
-			<h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+		<section className="flex flex-col gap-3.5">
+			<h2 className="text-3xl font-bold tracking-[-0.03em] text-foreground">
 				{title}
 			</h2>
 			{children}
