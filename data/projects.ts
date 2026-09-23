@@ -22,14 +22,14 @@ export interface Project {
 /**
  * Projects — newest first. Clicking an entry navigates to `url`. To add one,
  * copy the template below, uncomment it, and fill in the fields. For on-site
- * projects use the site's own icon ("/icon.svg"); for external sites the
+ * projects use the site monogram ("/monogram.svg"); for external sites the
  * favicon service "https://icons.duckduckgo.com/ip3/<domain>.ico" works well.
  *
  * {
  * 	id: "project-id",
  * 	title: "Project Name",
  * 	description: "What it is, in one line.",
- * 	icon: "/icon.svg",
+ * 	icon: "/monogram.svg",
  * 	url: "/project-path",            // or "https://..."; omit if not clickable
  * 	year: "2025",                     // optional
  * 	iconClassName: "size-9",          // optional — only if the icon looks small
@@ -50,7 +50,7 @@ export const projects: Project[] = [
 		id: "flag-quiz",
 		title: "Flag Quiz",
 		description: "Test your knowledge of world flags.",
-		icon: "/icon.svg",
+		icon: "/monogram.svg",
 		url: "/flag-quiz",
 		year: "2025",
 	},
