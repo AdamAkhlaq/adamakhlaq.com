@@ -42,7 +42,7 @@ export const roles: Role[] = [
 		company: "bp",
 		title: "Software Engineer",
 		dateRange: "2023 — Present",
-		icon: "https://icons.duckduckgo.com/ip3/bp.com.ico",
+		icon: "/bp.svg",
 		location: "London, UK",
 		details: [
 			"Currently redeveloping how bp's UK retail runs. Responsible for engineering point-of-sale software where reliability, scale, and compliance are non-negotiable.",
