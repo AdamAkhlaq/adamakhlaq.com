@@ -12,10 +12,10 @@ export function Sidebar() {
 			<Image
 				src={profile.photo}
 				alt={profile.name}
-				width={112}
-				height={112}
+				width={192}
+				height={192}
 				priority
-				className="size-14 rounded-full border object-cover"
+				className="size-20 rounded-full border object-cover lg:size-24"
 			/>
 
 			<h1 className="flex flex-col text-6xl font-bold leading-[0.92] tracking-[-0.045em] text-foreground sm:text-7xl lg:text-[5.25rem]">
