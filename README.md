@@ -69,5 +69,12 @@ public/            # Static assets
 
 ## License
 
-Personal project, the source is public for reference, but the content,
-branding, and design are © Adam Akhlaq. Please don't redeploy it as your own.
+- **Code:** [MIT](LICENSE).
+- **Writing:** everything in `content/`, including post illustrations and
+  diagrams, is [CC BY 4.0](content/LICENSE). Reuse it freely with credit and a
+  link back to the original post.
+- **Not covered by either:** my profile photo (`public/profile.jpg`) and
+  third-party logos such as `public/bp.svg`, which belong to their owners.
+
+If you fork the site, please swap in your own name, photo and writing rather
+than redeploying it as-is.
