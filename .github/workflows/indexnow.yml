@@ -1,0 +1,45 @@
+name: IndexNow
+
+on:
+  deployment_status:
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: indexnow
+  cancel-in-progress: false
+
+jobs:
+  submit:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success' &&
+      github.event.deployment.environment == 'Production')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      # A manual run submits every URL. A deploy submits what changed since
+      # the last successful run, so a failed submission is retried next deploy.
+      - name: Find the last submission
+        id: last
+        if: github.event_name == 'deployment_status'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          since=$(gh run list --repo "$GITHUB_REPOSITORY" \
+            --workflow indexnow.yml --status success --limit 1 \
+            --json createdAt --jq '.[0].createdAt // ""')
+          echo "since=$since" >> "$GITHUB_OUTPUT"
+
+      - name: Submit changed URLs
+        env:
+          SINCE: ${{ steps.last.outputs.since }}
+        run: node scripts/indexnow.ts ${SINCE:+--since "$SINCE"}

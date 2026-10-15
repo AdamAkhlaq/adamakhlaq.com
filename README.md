@@ -53,7 +53,8 @@ A few decisions worth calling out:
 
 - **SEO & metadata.** Open Graph and Twitter cards via the Next.js Metadata API,
   `BlogPosting` JSON-LD on posts, and a generated `sitemap.xml` and
-  `robots.txt` (`app/sitemap.ts`, `app/robots.ts`).
+  `robots.txt` (`app/sitemap.ts`, `app/robots.ts`). Production deploys ping
+  IndexNow with the URLs that changed (`scripts/indexnow.ts`).
 
 - **Design system.** Tailwind v4 with design tokens defined as CSS variables in
   `globals.css`, composed through small shadcn-style primitives in

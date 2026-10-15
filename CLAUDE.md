@@ -29,6 +29,9 @@ pnpm. Deployed on Vercel from `main`.
 - Commits touching a post become its public changelog, with the type prefix
   stripped. Write their subjects for readers.
 - Bump `updated` only for meaningful edits, not typo fixes.
+- Each production deploy submits sitemap URLs with a new `lastmod` to IndexNow
+  (`.github/workflows/indexnow.yml`). The key is the hex-named `.txt` in
+  `public/`; never delete or rename it.
 - Text in a post illustration must use `ArtText` from
   `components/blog/art-text.tsx`. SVG `<text>` is blank in the share image.
 
