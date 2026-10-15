@@ -82,7 +82,7 @@ export default function RootLayout({
 				<script dangerouslySetInnerHTML={{ __html: themeScript }} />
 				<Script
 					data-website-id={process.env.NEXT_PUBLIC_DATAFAST_WEBSITE_ID}
-					data-domain="www.adamakhlaq.com"
+					data-domain="adamakhlaq.com"
 					data-disable-console="true"
 					src="/js/script.js"
 					strategy="afterInteractive"
