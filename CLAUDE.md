@@ -42,3 +42,6 @@ pnpm. Deployed on Vercel from `main`.
   page flashes.
 - `/js/script.js` and `/api/events` are rewrites to DataFast analytics in
   `next.config.ts`. Do not create routes at those paths.
+- Read files at runtime from the project, like `assets/fonts/`, never from
+  `node_modules`. Vercel drops pnpm's symlinks, so those reads fail when a bot
+  gets a full render at request time.

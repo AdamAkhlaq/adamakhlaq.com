@@ -11,8 +11,9 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 // Read at module scope so the image prerenders at build time; a read inside
-// the handler counts as uncached data under Cache Components.
-const fonts = join(process.cwd(), "node_modules/geist/dist/fonts/geist-sans");
+// the handler counts as uncached data under Cache Components. Fonts come from
+// assets/ rather than node_modules; see components/blog/art-text.tsx.
+const fonts = join(process.cwd(), "assets/fonts");
 const [bold, medium, photo] = await Promise.all([
 	readFile(join(fonts, "Geist-Bold.ttf")).then(withoutKerning),
 	readFile(join(fonts, "Geist-Medium.ttf")).then(withoutKerning),

@@ -4,11 +4,13 @@ import { create, type Font } from "fontkit";
 import type { SVGProps } from "react";
 
 // Read at module scope so the art prerenders at build time, like the fonts in
-// app/blog/[slug]/opengraph-image.tsx.
-const dir = join(process.cwd(), "node_modules/geist/dist/fonts");
+// app/blog/[slug]/opengraph-image.tsx. The fonts are copied into assets/
+// because Vercel drops pnpm's node_modules symlinks, so a node_modules path
+// is missing when a bot's request renders the page at runtime.
+const dir = join(process.cwd(), "assets/fonts");
 const [mono, pixel] = await Promise.all([
-	readFile(join(dir, "geist-mono/GeistMono-Regular.woff2")),
-	readFile(join(dir, "geist-pixel/GeistPixel-Square.woff2")),
+	readFile(join(dir, "GeistMono-Regular.woff2")),
+	readFile(join(dir, "GeistPixel-Square.woff2")),
 ]);
 const FONTS = { mono: create(mono) as Font, pixel: create(pixel) as Font };
 
