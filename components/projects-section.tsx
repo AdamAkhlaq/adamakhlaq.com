@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 import { Entry } from "@/components/entry";
 import { FaviconIcon } from "@/components/favicon-icon";
 import { externalLinkProps } from "@/lib/utils";
@@ -18,13 +17,15 @@ function ProjectEntry({ project }: { project: Project }) {
 							imgClassName={project.iconClassName}
 						/>
 					)}
-					{project.title}
-					{project.url && (
-						<ArrowUpRight
-							className="size-4 shrink-0 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-							aria-hidden
-						/>
-					)}
+					<span
+						className={
+							project.url
+								? "underline decoration-transparent underline-offset-4 transition-colors group-hover:decoration-foreground group-focus-visible:decoration-foreground"
+								: undefined
+						}
+					>
+						{project.title}
+					</span>
 				</>
 			}
 		>
