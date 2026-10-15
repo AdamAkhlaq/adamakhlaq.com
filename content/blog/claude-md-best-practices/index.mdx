@@ -1,0 +1,245 @@
+---
+title: "CLAUDE.md best practices: what worked for me and my team"
+description: "CLAUDE.md best practices from my own projects and my team at bp: how I use each layer in Claude Code, and what has actually made a difference."
+published: "2026-10-15"
+summary:
+  - "My user file is a list of things Claude did that I didn't agree with, written down once so I stop correcting them."
+  - "At bp, our team file is shared, kept under 140 lines, and pruned as often as it's added to."
+  - "My `CLAUDE.local.md` is the file I change most. I update it for each task to point Claude at resources on my machine, and I prompt far less as a result."
+  - "Asking Claude to reproduce bugs and verify fixes end to end made its changes much more accurate. It costs time and tokens."
+  - "Anything that could be a disaster also goes in permission rules, which Claude Code enforces instead of leaving it to Claude."
+faq:
+  - q: "Does the project file override my user file?"
+    a: "No. Both are loaded and concatenated, broadest first, so the project file is read after your user file. If two instructions contradict each other, Claude may follow either, so keep them consistent."
+  - q: "Should I commit CLAUDE.md to git?"
+    a: "Commit `CLAUDE.md` and `.claude/rules/` so the whole team shares them. Add `CLAUDE.local.md` to `.gitignore`; it is for notes that are only true on your machine."
+  - q: "How long should a CLAUDE.md be?"
+    a: "The docs suggest under 200 lines per file. My team keeps ours under 140, because every line costs context in every session. If yours is longer, move step-by-step procedures into skills and folder-specific detail into nested files or path-scoped rules. Imported files still load at launch, so splitting the file into imports keeps the same cost."
+  - q: "How do I see which files Claude loaded?"
+    a: "Run `/context` and look under Memory files for what loaded at launch. Nested files and path-scoped rules load later, once Claude works in a matching folder or file, and a nested `CLAUDE.md` prints a Loaded line in the terminal when it does. `/memory` lists your user and project files, including ones that do not exist yet, and opens one in your editor."
+  - q: "Can I share instructions with other coding agents?"
+    a: "Yes. Claude Code reads `AGENTS.md` on its own when your repo has no `CLAUDE.md` or `CLAUDE.local.md`. A `CLAUDE.local.md` counts, so if you keep one, or want both, add `@AGENTS.md` to the top of a `CLAUDE.md` and put Claude-only notes below it."
+sources:
+  - title: "How Claude remembers your project"
+    publisher: "Claude Code docs"
+    url: "https://code.claude.com/docs/en/memory"
+    note: "Every scope, path and import rule. The reference this post is built on."
+  - title: "Best practices for Claude Code"
+    publisher: "Claude Code docs"
+    url: "https://code.claude.com/docs/en/best-practices"
+    note: "What belongs in `CLAUDE.md`, and what should be a skill or a hook instead."
+  - title: "Effective context engineering for AI agents"
+    publisher: "Anthropic Engineering"
+    url: "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+    note: "Why a small, sharp context beats a large one. The reasoning behind keeping files short."
+  - title: "Configure permissions"
+    publisher: "Claude Code docs"
+    url: "https://code.claude.com/docs/en/permissions"
+    note: "Allow, ask and deny rules, and what a Bash rule does and doesn't match."
+furtherReading:
+  - title: "AGENTS.md"
+    publisher: "agents.md"
+    url: "https://agents.md"
+    note: "The open format other coding agents read. Claude Code reads it too when a repo has no `CLAUDE.md` or `CLAUDE.local.md`."
+---
+
+import { LayersFigure } from "./layers-figure";
+
+export { PixelStackArt as Illustration } from "./pixel-stack-art";
+
+## Where this started
+
+I'd been writing `CLAUDE.md` files for my own projects for a while: a few notes on how I like to work, the odd command Claude kept getting wrong. It helped, but it wasn't a big deal. If I got something wrong in there, I was the only one who'd notice.
+
+That changed earlier this year, when my team at bp moved from Cursor to Claude Code. I opened the PR that swapped our Cursor rules for a `CLAUDE.md`, and the file stopped being personal notes. It became shared context for the whole team, read at the start of every session. If it was wrong, it was wrong for everyone.
+
+So I kept digging into how Claude Code actually reads these files, and found there was far more to it than one file in the repo root. There are several layers of `CLAUDE.md`, each with its own job: one for me, one for the team, one for whatever I'm working on right now. Once I started putting each instruction in the right layer, the output got noticeably better.
+
+This post covers the `CLAUDE.md` best practices I've learnt since: how I use each layer, what has made a real difference, and one thing that didn't work.
+
+## The layers, briefly
+
+A quick map first, because the layers are what make the rest work. Claude Code reads instructions from several places, broadest first.<Cite n={1} />
+
+| Layer   | Where                 | Who sees it                 |
+| ------- | --------------------- | --------------------------- |
+| User    | `~/.claude/CLAUDE.md` | Only you, in every project  |
+| Project | `./CLAUDE.md`         | Your team, via git          |
+| Local   | `./CLAUDE.local.md`   | Only you, in this project   |
+| Nested  | `src/**/CLAUDE.md`    | Your team, loaded on demand |
+
+They stack. Claude loads every `CLAUDE.md` and `CLAUDE.local.md` from where you start it up to the root, reads the closest one last, and picks up a nested file once it works in that folder. If two lines contradict each other, it may follow either, so I keep them consistent.
+
+<LayersFigure caption="Figure 1. Each file adds to the ones before it. The file closest to where Claude is working is read last." />
+
+## My user CLAUDE.md: things I disagreed with
+
+My user file is the one that follows me into every repo, and it grew one correction at a time. Every line is either something I watched Claude do that I didn't agree with, or something that made its output noticeably better. Once a correction is in the file, I don't have to make it again.
+
+```md filename="~/.claude/CLAUDE.md" highlight="7"
+# How I work
+
+- Never commit or push without my explicit approval. First explain the changes, show me the proposed commit message, and wait for my go-ahead.
+- Never add AI attribution to commits, PRs, code or docs.
+- Never manually edit files marked as auto-generated.
+- Prefer quality, simplicity and long-term maintainability over development cost.
+- When fixing a bug, reproduce it end to end first, then verify the fix the same way.
+- If you see a lint error or a flaky test, fix it, even if you did not cause it.
+- Only add comments for the why behind a non-obvious decision.
+- Never use the em dash. Use a plain dash.
+```
+
+Some lines are about trust: every commit and push waits until I've seen the message and said yes. Some are taste, like the dash. And one has changed the quality of the work more than any other, the line about reproducing bugs, which I'll come back to.
+
+Before a line goes in, I ask myself one question: would this still be true in a repo I've never seen? If it mentions a framework, a folder or a command, it belongs in a project file instead.
+
+## Our team CLAUDE.md at bp
+
+The team file is more complex. It has to work for everyone who reads it, human or not, so it has to be accurate, and the only way it stays accurate is if we treat it like code. We add to it when Claude keeps getting something wrong or a new convention lands, and we prune it just as often. A stale line does real harm, because Claude will follow it confidently.
+
+We keep it under 140 lines. That is stricter than the 200 the docs suggest, and it's deliberate: every line costs context in every session, for everyone on the team. The test for each line comes from the docs: would removing it cause Claude to make a mistake? If not, it goes.<Cite n={2} />
+
+A good team file says two things: what to do, and what never to do. The first half is the commands and conventions Claude can't work out from the code. The second half is the **Never** list, where the expensive mistakes go, and in my experience it's the most valuable part of the file.
+
+Ours is internal, so here's the shape of one on a made-up app:
+
+```md filename="./CLAUDE.md"
+# Acme dashboard
+
+Next.js 16 (App Router), TypeScript, Postgres via Drizzle, pnpm.
+
+## Commands
+- `docker compose up db` before `pnpm dev`, or every page 500s
+- `pnpm test <file>` runs one Vitest file. Prefer it to the full suite
+- `pnpm e2e` is slow. Run it only when a user flow changes
+- After editing `src/db/schema.ts`, run `pnpm db:generate`
+- `pnpm lint && pnpm typecheck` must pass before a commit
+
+## Conventions
+- Components never import `db`. Queries live in `src/db/queries/`
+- Money is stored in pence as integers, never floats
+- Remove a feature flag in the same PR that removes the old path
+
+## Workflow
+- Branches: `feat/`, `fix/` or `chore/` plus a short slug
+- Every UI change needs a screenshot in the PR
+
+## Never
+- Never edit a migration that has been merged. Generate a new one
+- Never push to `main`. Every change goes through a PR
+- Never skip or delete a failing test to get CI green
+- Never commit `.env` files or paste secrets into code or logs
+```
+
+## What didn't work: a doc for everything
+
+For a while I went the other way. I wrote separate documents for the architecture, the decisions we'd made and how things fit together, and imported all of them into `CLAUDE.md` with `@`. It felt organised. In practice it bloated the context window: every session paid for all of it, whether the task needed it or not.
+
+The docs are clear on why. An imported file loads at launch, just like the file that imports it, so splitting one long file into five short ones costs exactly the same.<Cite n={1} /> Anthropic's writing on context engineering makes the wider point: you want the smallest set of high-signal tokens that gets the job done.<Cite n={3} />
+
+So now `CLAUDE.md` holds only what every session needs. Detail for one part of the codebase goes in a nested `CLAUDE.md` or a path-scoped rule, which only loads when Claude touches a matching file:
+
+```md filename=".claude/rules/api.md"
+---
+paths:
+  - "src/app/api/**/*.ts"
+---
+- Validate request bodies with the zod schemas in src/lib/validation
+- Return errors with apiError() so every error has the same shape
+```
+
+## My CLAUDE.local.md: a map of everything else
+
+`CLAUDE.local.md` is the file I change the most. It sits next to the team file but stays out of git, so it's mine to rewrite whenever my task changes. Each new piece of work gets its own version.
+
+I use it to point Claude at resources on my machine, many of which are never committed to the repo: the design doc I'm implementing, wiki pages, the API collections I test with, and vendor files we keep locally. Since I started keeping one, I need far less prompting, because Claude already knows where everything lives.
+
+```md filename="./CLAUDE.local.md"
+# CLAUDE.local.md - my reference index (not committed)
+
+Pointers for the work I am on now: the design in `docs/rfc/0004-orders-on-aws.md`. None of this is in the repo, so check a path still exists before relying on it.
+
+## Docs outside the repo
+- Naming convention: the "Service naming v0.2" page on the team wiki. Fetch it with the wiki tool rather than working from memory.
+
+## API collections (`~/Documents/bruno/`)
+- `Vendor Catalog API` - a request for every endpoint our client calls, including the auth failures.
+
+## Vendor files
+- `docs/api-contracts/vendor/` - the vendor's portal is behind a login, so you can't fetch these. Read the local copies.
+```
+
+A few things make it work:
+
+- **Tie it to the current task.** Naming the design doc at the top makes it obvious when it's time to update the file.
+- **Say how to fetch things.** Name the tool and the exact page, so Claude can get it straight away.
+- **Warn that it goes stale.** The file is only as current as my last edit, so the first lines tell Claude to check a path exists before relying on it.
+
+## Reproduce it, then prove it
+
+The line in my user file that has made the biggest difference is the dullest-sounding one: reproduce the bug end to end first. Then, once there's a fix, verify that end to end too, the way someone would actually hit it. That way Claude sees the bug happen, then sees it stop happening.
+
+The result has been much higher accuracy. At work, on a distributed system, it has meant far fewer follow-up PRs. Changes are right the first time far more often.
+
+At a recent hackathon I experimented with taking this further by opening the project's `CLAUDE.md` with it: a table of exactly what to run for each kind of change, so Claude always knew how to prove its work:
+
+```md filename="./CLAUDE.md"
+## Verify every change yourself
+
+Never say something works until you have run the check that proves it and read the output.
+
+| You changed           | Run                                    |
+| --------------------- | -------------------------------------- |
+| Python in one package | `uv run pytest <dir>`                  |
+| Any shipped code      | `make check`                           |
+| The UI                | `make test-ui`, then look at the page  |
+| Prompts or tools      | `make eval`                            |
+
+- Behaviour changes need a test first. Write the failing test, watch it fail, then fix.
+- Reproduce a bug the way a user would hit it before fixing it, then confirm the fix there.
+- Report honestly: say which checks you ran and what they printed, including failures.
+```
+
+It does cost something. Reproducing and verifying end to end takes longer and uses more tokens, sometimes a lot more. I still do it for every fix, because a wrong fix costs more. On a change that crosses services, a wrong fix means another PR, another review and another deploy.
+
+## Guardrails go in permissions
+
+Everything above is context: Claude reads it and does its best to follow it.<Cite n={1} /> That's enough for most things. For anything that would be a disaster, I want something Claude Code enforces, not something Claude tries to follow.
+
+On a side project that holds sensitive data, the production rules are written into the project file: what's safe to run, what needs my approval, and what must never happen. The same rules also live in the permission settings, which Claude Code enforces rather than the model:<Cite n={4} />
+
+```json filename=".claude/settings.json"
+{
+  "permissions": {
+    "deny": [
+      "Bash(*DROP TABLE*)",
+      "Bash(*drop table*)",
+      "Bash(*TRUNCATE *)",
+      "Bash(*truncate *)",
+      "Bash(*DELETE FROM*)",
+      "Bash(*delete from*)",
+      "Bash(*drizzle-kit push*)",
+      "Bash(*vercel env rm*)"
+    ],
+    "ask": [
+      "Bash(vercel)",
+      "Bash(vercel --prod*)",
+      "Bash(*vercel deploy*)",
+      "Bash(*vercel env add*)"
+    ]
+  }
+}
+```
+
+I set these up before anything went wrong, simply because Claude Code lets you. The prose explains why; the permissions stop the commands Claude would actually write. They match the command text, so they aren't a hard boundary. A SQL file run with `psql -f` would get past every rule above. Where something truly must never happen, add a sandbox, a hook, or database credentials that can't drop anything.<Cite n={4} />
+
+## If I were starting again
+
+- **Write down what you disagree with.** The best lines in my user file are corrections I got tired of making.
+- **Treat the team file like code.** Add to it and prune it together, keep it short, and give it a Never list.
+- **Point to what lives outside the repo.** A local file of paths saves more prompting than any clever instruction.
+- **Load only what every session needs.** Imports still load at launch, so keep the main file lean and push detail into nested files and rules.
+- **Make Claude prove it.** Reproduce and verify every fix end to end, and accept the cost in time and tokens.
+- **Put disasters in permissions.** If something must never happen, back the prose with a permission rule, and with a sandbox or hook where it has to hold.
+
+This site has its own `CLAUDE.md` too: about forty lines of commands, conventions and gotchas, such as the fact that pages are prerendered, so a server-rendered clock would be frozen at build time. You can [read it on GitHub](https://github.com/AdamAkhlaq/adamakhlaq.com/blob/main/CLAUDE.md).
