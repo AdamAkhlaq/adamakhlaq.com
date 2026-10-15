@@ -18,6 +18,7 @@ who I am; the column on the right holds what I have done.
 | Animation       | [Framer Motion](https://www.framer.com/motion/)                                                   |
 | Icons           | [Lucide](https://lucide.dev/)                                                                     |
 | Fonts           | [Geist](https://vercel.com/font) Sans & Mono                                                      |
+| Blog            | [MDX](https://mdxjs.com/) via `@next/mdx`, [Shiki](https://shiki.style/), [Zod](https://zod.dev/) |
 | Tooling         | ESLint (`eslint-config-next`) + Prettier                                                          |
 | Package manager | [pnpm](https://pnpm.io/)                                                                          |
 | Hosting         | [Vercel](https://vercel.com/)                                                                     |
@@ -37,9 +38,22 @@ A few decisions worth calling out:
   _before_ first paint, so there is no theme flash on load. React reads that same state during render via
   `useSyncExternalStore`, no `useEffect`, no hydration mismatch.
 
+- **Blog as MDX files.** Each post is one folder in
+  [`content/blog/`](./content/blog): an `index.mdx` with typed frontmatter
+  (checked against a Zod schema at build time) and any components only that
+  post uses, such as its illustration. One parse of each file produces the
+  page, its contents list, a Markdown copy at `/blog/<slug>.md`, the full-text
+  RSS feed at `/feed.xml`, and a generated share image. Every route is
+  prerendered.
+
+- **Open-source posts.** Each post shows a changelog built from the git
+  history of its file, so commit subjects double as public changelog entries.
+  Vercel clones shallowly, so on Vercel the history comes from the GitHub API
+  instead (set `GITHUB_TOKEN` to raise its rate limit).
+
 - **SEO & metadata.** Open Graph and Twitter cards via the Next.js Metadata API,
-  with a generated `sitemap.xml` and `robots.txt` (`app/sitemap.ts`,
-  `app/robots.ts`).
+  `BlogPosting` JSON-LD on posts, and a generated `sitemap.xml` and
+  `robots.txt` (`app/sitemap.ts`, `app/robots.ts`).
 
 - **Design system.** Tailwind v4 with design tokens defined as CSS variables in
   `globals.css`, composed through small shadcn-style primitives in
@@ -55,15 +69,20 @@ A few decisions worth calling out:
 ```
 app/
   (site)/          # Homepage route group (sidebar + work, projects, writing)
+  blog/[slug]/     # Post page, share image, and Markdown copy
+  feed.xml/        # Full-text RSS feed
   flag-quiz/       # Self-contained Flag Quiz game (co-located components & hooks)
   layout.tsx       # Root layout, metadata, theme bootstrap script
   sitemap.ts       # Generated sitemap.xml
   robots.ts        # Generated robots.txt
   globals.css      # Tailwind + design tokens
-components/         # Shared UI (sidebar, entries, sections, footer, theme, ui/ primitives)
+components/        # Shared UI (sidebar, entries, sections, footer, theme, ui/ primitives)
+  blog/            # Post page components (prose, code blocks, contents, art)
+content/blog/      # Posts: one folder per post, index.mdx plus its own components
 data/              # Typed content: profile, work, projects, links, …
 hooks/             # Shared React hooks
 lib/               # Utilities (cn, gradients)
+  blog/            # Post loading, frontmatter schema, Markdown, Shiki, changelog
 public/            # Static assets
 ```
 

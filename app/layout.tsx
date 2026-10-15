@@ -61,6 +61,11 @@ export const metadata: Metadata = {
 		},
 	},
 	metadataBase: new URL("https://adamakhlaq.com"),
+	alternates: {
+		types: {
+			"application/rss+xml": [{ url: "/feed.xml", title: "Adam Akhlaq" }],
+		},
+	},
 };
 
 // Inline script to prevent FOUC by reading theme from localStorage before first paint.

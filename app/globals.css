@@ -50,6 +50,10 @@
 	--border: oklch(0.88 0 0);
 	--input: oklch(0.88 0 0);
 	--ring: oklch(0.708 0 0);
+	--code-text: color-mix(in oklab, var(--foreground) 85%, transparent);
+	--code-strong: var(--foreground);
+	--code-muted: var(--muted-foreground);
+	--code-accent: oklch(0.541 0.281 293.009);
 }
 
 .dark {
@@ -71,6 +75,7 @@
 	--border: oklch(1 0 0 / 10%);
 	--input: oklch(1 0 0 / 15%);
 	--ring: oklch(0.556 0 0);
+	--code-accent: oklch(0.702 0.183 293.541);
 }
 
 @layer base {
