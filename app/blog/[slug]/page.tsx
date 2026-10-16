@@ -11,7 +11,8 @@ import { PostNav } from "@/components/blog/post-nav";
 import { H2, Prose } from "@/components/blog/prose";
 import { SourcesRows } from "@/components/blog/sources";
 import { TocMobileBar, TocProgress } from "@/components/blog/toc";
-import { getPost, getPostSlugs, loadPostModule } from "@/lib/blog/posts";
+import { loadPostModule } from "@/lib/blog/post-module";
+import { getPost, getPostSlugs } from "@/lib/blog/posts";
 import { profile } from "@/data/profile";
 
 export async function generateStaticParams() {

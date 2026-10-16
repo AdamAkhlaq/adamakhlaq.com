@@ -1,7 +1,6 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import type { Root } from "mdast";
-import type { MDXContent } from "mdx/types";
 import { cacheLife } from "next/cache";
 import { parse as parseYaml } from "yaml";
 import { profile } from "@/data/profile";
@@ -44,14 +43,6 @@ export type Post = Frontmatter & {
 	/** The post body as HTML, for the RSS feed. */
 	html: string;
 };
-
-/** An illustration drawn as SVG, used on the homepage card and share image. */
-export type Illustration = React.ComponentType<{
-	title?: string;
-	color?: string;
-}>;
-
-type PostModule = { default: MDXContent; Illustration?: Illustration };
 
 export function formatDate(date: string, month: "long" | "short" = "long") {
 	return new Intl.DateTimeFormat("en-GB", {
@@ -129,8 +120,4 @@ export async function getPosts(): Promise<Post[]> {
 	return posts
 		.filter((p): p is Post => p !== null)
 		.sort((a, b) => b.published.localeCompare(a.published));
-}
-
-export async function loadPostModule(slug: string): Promise<PostModule> {
-	return import(`@/content/blog/${slug}/index.mdx`);
 }

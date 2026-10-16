@@ -1,4 +1,4 @@
-import { loadPostModule } from "@/lib/blog/posts";
+import { loadPostModule } from "@/lib/blog/post-module";
 import { FallbackArt } from "./fallback-art";
 
 /** A post's own illustration, or a pattern drawn from its slug. */

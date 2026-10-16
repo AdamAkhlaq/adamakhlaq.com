@@ -2,7 +2,8 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { FallbackArt } from "@/components/blog/fallback-art";
-import { getPost, getPostSlugs, loadPostModule } from "@/lib/blog/posts";
+import { loadPostModule } from "@/lib/blog/post-module";
+import { getPost, getPostSlugs } from "@/lib/blog/posts";
 import { svgDataUri } from "@/lib/blog/svg";
 import { profile } from "@/data/profile";
 

@@ -1,5 +1,5 @@
 import { isValidElement } from "react";
-import { highlight, isCodeLang, type CodeToken } from "@/lib/blog/highlight";
+import { highlight } from "@/lib/blog/highlight";
 import { cn } from "@/lib/utils";
 import { CopyButton } from "./copy-button";
 
@@ -17,9 +17,7 @@ export async function CodeBlock({
 	highlight?: string;
 }) {
 	const { code, lang } = readCode(children);
-	const lines: CodeToken[][] = isCodeLang(lang)
-		? await highlight(code, lang)
-		: code.split("\n").map((line) => [{ content: line, bold: false }]);
+	const lines = await highlight(code, lang);
 	const marked = parseLines(highlighted);
 
 	return (
