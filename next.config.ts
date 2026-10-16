@@ -1,6 +1,33 @@
 import type { NextConfig } from "next";
 import createMDX from "@next/mdx";
 
+const securityHeaders = [
+	{
+		key: "Content-Security-Policy",
+		value:
+			"base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'",
+	},
+	{ key: "X-Frame-Options", value: "DENY" },
+	{ key: "X-Content-Type-Options", value: "nosniff" },
+	{ key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+	{
+		key: "Permissions-Policy",
+		value: [
+			"accelerometer=()",
+			"browsing-topics=()",
+			"camera=()",
+			"display-capture=()",
+			"geolocation=()",
+			"gyroscope=()",
+			"magnetometer=()",
+			"microphone=()",
+			"midi=()",
+			"payment=()",
+			"usb=()",
+		].join(", "),
+	},
+];
+
 const nextConfig: NextConfig = {
 	// Enable Cache Components (stable in Next.js 16.0.3+)
 	cacheComponents: true,
@@ -25,6 +52,10 @@ const nextConfig: NextConfig = {
 	// Optimize barrel imports for tree-shaking
 	experimental: {
 		optimizePackageImports: ["lucide-react"],
+	},
+
+	async headers() {
+		return [{ source: "/:path*", headers: securityHeaders }];
 	},
 
 	async rewrites() {
