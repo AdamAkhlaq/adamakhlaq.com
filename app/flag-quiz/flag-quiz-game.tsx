@@ -640,7 +640,7 @@ export default function FlagQuizGame() {
 								sizes="(max-width: 640px) 320px, (max-width: 768px) 384px, 448px"
 								className="max-h-40 sm:max-h-48 md:max-h-56 w-auto rounded-lg shadow-md"
 								draggable={false}
-								priority
+								preload
 							/>
 							{/* Hint button */}
 							<motion.button

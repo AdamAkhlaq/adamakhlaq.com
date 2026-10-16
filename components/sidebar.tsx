@@ -14,7 +14,7 @@ export function Sidebar() {
 				alt={profile.name}
 				width={192}
 				height={192}
-				priority
+				preload
 				className="size-20 rounded-full border object-cover lg:size-24"
 			/>
 

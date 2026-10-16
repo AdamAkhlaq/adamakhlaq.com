@@ -4,6 +4,13 @@ import createMDX from "@next/mdx";
 const nextConfig: NextConfig = {
 	// Enable Cache Components (stable in Next.js 16.0.3+)
 	cacheComponents: true,
+	// Partial Prefetching would drop post content from blog link prefetches
+	// while app/blog/[slug]/page.tsx reads params outside Suspense:
+	// https://nextjs.org/docs/app/guides/adopting-partial-prefetching
+	partialPrefetching: false,
+	// The repo's agent instructions live in CLAUDE.md, so `next dev` must not
+	// write an AGENTS.md.
+	agentRules: false,
 
 	// Configure external image domains
 	images: {

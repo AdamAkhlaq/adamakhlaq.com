@@ -53,7 +53,7 @@ export function PostNav({
 						alt=""
 						width={56}
 						height={56}
-						priority
+						preload
 						className="size-7 rounded-full border object-cover transition-transform duration-200 group-hover:scale-105"
 					/>
 					{profile.name}
