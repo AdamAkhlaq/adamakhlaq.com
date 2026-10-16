@@ -1,40 +1,44 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import type { GameMode } from "../types";
+import { useEffect, useEffectEvent } from "react";
+
+const TICK_INTERVAL_MS = 250;
 
 interface UseGameTimerOptions {
-	mode: GameMode;
-	timeRemaining: number;
-	isPlaying: boolean;
-	onTick: () => void;
+	isRunning: boolean;
+	timeLimit: number | undefined;
+	onTick: (secondsRemaining: number) => void;
 	onTimeUp: () => void;
 }
 
 export function useGameTimer({
-	mode,
-	timeRemaining,
-	isPlaying,
+	isRunning,
+	timeLimit,
 	onTick,
 	onTimeUp,
 }: UseGameTimerOptions) {
-	const timerRef = useRef<NodeJS.Timeout | null>(null);
+	const tick = useEffectEvent(onTick);
+	const timeUp = useEffectEvent(onTimeUp);
 
 	useEffect(() => {
-		if (!isPlaying || mode !== "timed" || timeRemaining <= 0) return;
+		if (!isRunning || !timeLimit) return;
 
-		timerRef.current = setInterval(() => {
-			if (timeRemaining <= 1) {
-				onTimeUp();
+		// Remaining time is derived from a fixed deadline so a delayed or
+		// throttled interval (e.g. in a background tab) cannot make it drift.
+		const endAt = Date.now() + timeLimit * 1000;
+		const interval = setInterval(() => {
+			const secondsRemaining = Math.max(
+				0,
+				Math.ceil((endAt - Date.now()) / 1000),
+			);
+			if (secondsRemaining === 0) {
+				clearInterval(interval);
+				timeUp();
 			} else {
-				onTick();
+				tick(secondsRemaining);
 			}
-		}, 1000);
+		}, TICK_INTERVAL_MS);
 
-		return () => {
-			if (timerRef.current) clearInterval(timerRef.current);
-		};
-	}, [isPlaying, mode, timeRemaining, onTick, onTimeUp]);
-
-	return timerRef;
+		return () => clearInterval(interval);
+	}, [isRunning, timeLimit]);
 }

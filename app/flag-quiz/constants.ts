@@ -1,7 +1,6 @@
 import type { Continent } from "@/data/countries";
 import { SITE_GRADIENT } from "@/lib/gradients";
 
-export const TOTAL_COUNTRIES = 195;
 export const MAX_HINT_LEVEL = 5;
 export const WEIGHTED_NEW_COUNTRY_PROBABILITY = 0.9;
 

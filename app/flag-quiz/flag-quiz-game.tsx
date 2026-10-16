@@ -30,7 +30,6 @@ import { useOperatingSystem } from "@/hooks/use-operating-system";
 import { LetterBoxInput, TextInput } from "./components";
 import { useConfetti, useGameTimer, useIOSKeyboardScroll } from "./hooks";
 import {
-	TOTAL_COUNTRIES,
 	MAX_HINT_LEVEL,
 	COUNT_OPTIONS,
 	TIME_OPTIONS,
@@ -75,6 +74,8 @@ export default function FlagQuizGame() {
 	const [answeredCount, setAnsweredCount] = useState(0);
 	const [scoreAnimation, setScoreAnimation] = useState<number | null>(null);
 	const [timeRemaining, setTimeRemaining] = useState(0);
+	// True while a hint is pending; hint, submit and skip are ignored until it
+	// lands so they cannot act on the pre-hint question state.
 	const [hintFlash, setHintFlash] = useState(false);
 	const [revealedIndices, setRevealedIndices] = useState<Set<number>>(
 		new Set(),
@@ -84,6 +85,9 @@ export default function FlagQuizGame() {
 	const inputRef = useRef<HTMLInputElement | null>(null);
 	const letterBoxRef = useRef<LetterBoxInputHandle | null>(null);
 	const previousGameCountriesRef = useRef<Set<string>>(new Set());
+	const pendingTimeoutsRef = useRef<Set<ReturnType<typeof setTimeout>>>(
+		new Set(),
+	);
 
 	// Hooks
 	const { isMac } = useOperatingSystem();
@@ -94,26 +98,44 @@ export default function FlagQuizGame() {
 	const currentCountry = questionPool[currentIndex];
 	const regionCountryCount =
 		config.region === "all"
-			? TOTAL_COUNTRIES
+			? countries.length
 			: getCountriesByContinent(config.region).length;
 	const maxQuestions =
 		config.mode === "count"
 			? Math.min(config.countLimit!, regionCountryCount)
 			: questionPool.length;
-	const isLastQuestion =
-		config.mode === "count" && currentIndex >= maxQuestions - 1;
+	const isLastQuestion = currentIndex >= maxQuestions - 1;
 
 	// Timer hook
 	useGameTimer({
-		mode: config.mode,
-		timeRemaining,
-		isPlaying: gameStatus === "playing",
-		onTick: () => setTimeRemaining((prev) => prev - 1),
+		isRunning: gameStatus === "playing" && config.mode === "timed",
+		timeLimit: config.timeLimit,
+		onTick: setTimeRemaining,
 		onTimeUp: () => {
 			setTimeRemaining(0);
 			setGameStatus("finished");
 		},
 	});
+
+	const schedule = useCallback((callback: () => void, delay: number) => {
+		const id = setTimeout(() => {
+			pendingTimeoutsRef.current.delete(id);
+			callback();
+		}, delay);
+		pendingTimeoutsRef.current.add(id);
+	}, []);
+
+	// A pending answer or hint transition belongs to the game that scheduled it,
+	// so drop it when that game ends rather than letting it fire in the next one.
+	useEffect(() => {
+		if (gameStatus !== "playing") return;
+
+		const pending = pendingTimeoutsRef.current;
+		return () => {
+			pending.forEach(clearTimeout);
+			pending.clear();
+		};
+	}, [gameStatus]);
 
 	// Score animation effect
 	useEffect(() => {
@@ -164,6 +186,7 @@ export default function FlagQuizGame() {
 		setShowResult(null);
 		setAnsweredCount(0);
 		setScoreAnimation(null);
+		setHintFlash(false);
 		setRevealedIndices(new Set());
 	}, []);
 
@@ -220,7 +243,7 @@ export default function FlagQuizGame() {
 	}, [isLastQuestion]);
 
 	const handleSubmit = useCallback(() => {
-		if (!currentCountry || showResult) return;
+		if (!currentCountry || showResult || hintFlash) return;
 
 		const answer =
 			currentHintLevel > 0
@@ -233,16 +256,16 @@ export default function FlagQuizGame() {
 			setScoreAnimation(pointsEarned);
 			setShowResult("correct");
 			setAnsweredCount((prev) => prev + 1);
-			setTimeout(advanceToNextQuestion, 1200);
+			schedule(advanceToNextQuestion, 1200);
 		} else {
 			setShowResult("wrong");
 
 			if (currentHintLevel >= MAX_HINT_LEVEL) {
 				setAnsweredCount((prev) => prev + 1);
-				setTimeout(advanceToNextQuestion, 1500);
+				schedule(advanceToNextQuestion, 1500);
 			} else {
 				setHintFlash(true);
-				setTimeout(() => {
+				schedule(() => {
 					if (currentCountry) {
 						setLetterBoxInput(Array(currentCountry.name.length).fill(""));
 						const newHintLevel = currentHintLevel + 1;
@@ -269,20 +292,23 @@ export default function FlagQuizGame() {
 		textInputValue,
 		letterBoxInput,
 		showResult,
+		hintFlash,
 		advanceToNextQuestion,
 		revealedIndices,
+		schedule,
 	]);
 
 	const handleHint = useCallback(() => {
 		if (
 			currentHintLevel >= MAX_HINT_LEVEL ||
 			showResult !== null ||
+			hintFlash ||
 			!currentCountry
 		)
 			return;
 
 		setHintFlash(true);
-		setTimeout(() => {
+		schedule(() => {
 			const newHintLevel = currentHintLevel + 1;
 			// Generate new revealed indices, keeping previously revealed ones
 			const newRevealedIndices = getRevealedIndices(
@@ -296,7 +322,14 @@ export default function FlagQuizGame() {
 			setHintFlash(false);
 			setTimeout(() => letterBoxRef.current?.focusFirst(), 50);
 		}, 300);
-	}, [currentHintLevel, showResult, currentCountry, revealedIndices]);
+	}, [
+		currentHintLevel,
+		showResult,
+		hintFlash,
+		currentCountry,
+		revealedIndices,
+		schedule,
+	]);
 
 	// Keyboard shortcut for hint
 	useEffect(() => {
@@ -315,14 +348,22 @@ export default function FlagQuizGame() {
 	}, [gameStatus, isMac, handleHint]);
 
 	const handleSkip = useCallback(() => {
+		if (hintFlash) return;
+
 		setAnsweredCount((prev) => prev + 1);
+
+		if (isLastQuestion) {
+			setGameStatus("finished");
+			return;
+		}
+
 		setCurrentIndex((prev) => prev + 1);
 		setTextInputValue("");
 		setCurrentHintLevel(0);
 		setShowResult(null);
 		setRevealedIndices(new Set());
 		inputRef.current?.focus();
-	}, []);
+	}, [isLastQuestion, hintFlash]);
 
 	const getMaxPossibleScore = () =>
 		config.mode === "count" ? maxQuestions * 10 : answeredCount * 10;
@@ -388,7 +429,7 @@ export default function FlagQuizGame() {
 							{REGION_DATA.map((region) => {
 								const count =
 									region.id === "all"
-										? TOTAL_COUNTRIES
+										? countries.length
 										: getCountriesByContinent(region.id).length;
 								const isSelected = config.region === region.id;
 
@@ -647,7 +688,9 @@ export default function FlagQuizGame() {
 								type="button"
 								onClick={handleHint}
 								disabled={
-									showResult !== null || currentHintLevel >= MAX_HINT_LEVEL
+									showResult !== null ||
+									hintFlash ||
+									currentHintLevel >= MAX_HINT_LEVEL
 								}
 								whileHover={
 									currentHintLevel < MAX_HINT_LEVEL ? { scale: 1.1 } : {}
@@ -823,7 +866,9 @@ export default function FlagQuizGame() {
 							<div>
 								<h2 className="text-2xl font-bold mb-2">Quiz Complete!</h2>
 								<p className="text-muted-foreground">
-									{config.mode === "timed" ? "Time's up!" : "Great job!"}
+									{config.mode === "timed" && timeRemaining === 0
+										? "Time's up!"
+										: "Great job!"}
 								</p>
 							</div>
 

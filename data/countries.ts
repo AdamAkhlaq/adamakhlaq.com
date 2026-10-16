@@ -13,9 +13,9 @@ export interface Country {
 	alternateNames?: string[];
 }
 
-// All 195 UN-recognized countries
+// UN member and observer states, plus Kosovo and Taiwan
 export const countries: Country[] = [
-	// Africa (54 countries)
+	// Africa
 	{ name: "Algeria", code: "dz", continent: "Africa" },
 	{ name: "Angola", code: "ao", continent: "Africa" },
 	{ name: "Benin", code: "bj", continent: "Africa" },
@@ -111,7 +111,7 @@ export const countries: Country[] = [
 	{ name: "Zambia", code: "zm", continent: "Africa" },
 	{ name: "Zimbabwe", code: "zw", continent: "Africa" },
 
-	// Asia (49 countries)
+	// Asia
 	{ name: "Afghanistan", code: "af", continent: "Asia" },
 	{ name: "Armenia", code: "am", continent: "Asia" },
 	{ name: "Azerbaijan", code: "az", continent: "Asia" },
@@ -227,7 +227,7 @@ export const countries: Country[] = [
 	},
 	{ name: "Yemen", code: "ye", continent: "Asia" },
 
-	// Europe (44 countries)
+	// Europe
 	{ name: "Albania", code: "al", continent: "Europe" },
 	{ name: "Andorra", code: "ad", continent: "Europe" },
 	{ name: "Austria", code: "at", continent: "Europe" },
@@ -309,7 +309,7 @@ export const countries: Country[] = [
 		alternateNames: ["Holy See", "Vatican"],
 	},
 
-	// North America (23 countries)
+	// North America
 	{ name: "Antigua and Barbuda", code: "ag", continent: "North America" },
 	{
 		name: "Bahamas",
@@ -362,7 +362,7 @@ export const countries: Country[] = [
 		alternateNames: ["USA", "US", "United States of America", "America"],
 	},
 
-	// South America (12 countries)
+	// South America
 	{ name: "Argentina", code: "ar", continent: "South America" },
 	{ name: "Bolivia", code: "bo", continent: "South America" },
 	{ name: "Brazil", code: "br", continent: "South America" },
@@ -376,7 +376,7 @@ export const countries: Country[] = [
 	{ name: "Uruguay", code: "uy", continent: "South America" },
 	{ name: "Venezuela", code: "ve", continent: "South America" },
 
-	// Oceania (14 countries)
+	// Oceania
 	{ name: "Australia", code: "au", continent: "Oceania" },
 	{ name: "Fiji", code: "fj", continent: "Oceania" },
 	{ name: "Kiribati", code: "ki", continent: "Oceania" },
