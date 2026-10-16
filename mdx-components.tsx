@@ -1,6 +1,7 @@
 import type { MDXComponents } from "mdx/types";
 import { CodeBlock } from "@/components/blog/code-block";
-import { A, H2, H3, InlineCode, OL, Table, UL } from "@/components/blog/prose";
+import { InlineCode } from "@/components/blog/inline-code";
+import { A, H2, H3, OL, Table, UL } from "@/components/blog/prose";
 
 const components: MDXComponents = {
 	h2: H2,

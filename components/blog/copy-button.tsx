@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Check, Copy } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { clsx } from "clsx";
 
 /** Copies `text`, or the response body of `src`, fetched on click. */
 export function CopyButton({
@@ -48,8 +48,9 @@ export function CopyButton({
 			type="button"
 			onClick={copy}
 			aria-label={copied ? "Copied" : label}
-			className={cn(
-				"inline-flex cursor-pointer items-center gap-1.5 rounded-md text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2",
+			className={clsx(
+				"inline-flex cursor-pointer items-center rounded-md text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2",
+				showLabel && "gap-2",
 				className,
 			)}
 		>

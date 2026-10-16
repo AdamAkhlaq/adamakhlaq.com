@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { RetryButton } from "@/components/retry-button";
 
 export default function FlagQuizError({
 	reset,
@@ -18,12 +19,7 @@ export default function FlagQuizError({
 					Something went wrong loading the flag quiz. Please try again.
 				</p>
 				<div className="flex items-center justify-center gap-3">
-					<button
-						onClick={reset}
-						className="text-sm font-medium border-2 border-foreground px-5 py-2.5 text-foreground bg-background hover:bg-foreground hover:text-background transition-all duration-150 rounded-md"
-					>
-						Try Again
-					</button>
+					<RetryButton onClick={reset}>Try again</RetryButton>
 					<Link
 						href="/"
 						className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"

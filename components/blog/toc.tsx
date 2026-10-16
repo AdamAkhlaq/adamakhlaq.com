@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import type { TocEntry } from "@/lib/blog/markdown";
-import { cn } from "@/lib/utils";
+import { clsx } from "clsx";
 import { scrollToSection, useScrollSpy } from "./use-scroll-spy";
 
 function TocLink({
@@ -54,7 +54,7 @@ export function TocProgress({ sections }: { sections: TocEntry[] }) {
 						/>
 						<TocLink
 							id={s.id}
-							className={cn(
+							className={clsx(
 								"block py-1.5 text-[14px] leading-snug transition-colors",
 								s.id === active
 									? "font-medium text-foreground"
@@ -91,7 +91,7 @@ export function TocMobileBar({ sections }: { sections: TocEntry[] }) {
 
 	return (
 		<div
-			className={cn(
+			className={clsx(
 				"fixed inset-x-0 top-14 z-40 border-b bg-background transition-[transform,opacity] duration-300 lg:hidden",
 				visible
 					? "translate-y-0 opacity-100"
@@ -106,7 +106,7 @@ export function TocMobileBar({ sections }: { sections: TocEntry[] }) {
 			>
 				<span className="truncate font-medium">{current?.title}</span>
 				<ChevronDown
-					className={cn(
+					className={clsx(
 						"size-4 shrink-0 text-muted-foreground transition-transform",
 						open && "rotate-180",
 					)}
@@ -125,7 +125,7 @@ export function TocMobileBar({ sections }: { sections: TocEntry[] }) {
 							<TocLink
 								id={s.id}
 								onNavigate={() => setOpen(false)}
-								className={cn(
+								className={clsx(
 									"block py-2 text-[15px]",
 									s.id === active ? "text-foreground" : "text-muted-foreground",
 								)}

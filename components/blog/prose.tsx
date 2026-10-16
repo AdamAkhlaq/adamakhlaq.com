@@ -66,14 +66,6 @@ export function A({
 	);
 }
 
-export function InlineCode({ children }: { children: React.ReactNode }) {
-	return (
-		<code className="rounded-[5px] border bg-muted/60 px-1.5 py-px font-mono text-[0.84em] text-foreground">
-			{children}
-		</code>
-	);
-}
-
 export function UL({ children }: { children: React.ReactNode }) {
 	return (
 		<ul className="flex flex-col gap-2.5 pl-5 marker:text-muted-foreground [&>li]:list-disc [&>li]:pl-1.5">

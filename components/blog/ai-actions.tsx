@@ -15,7 +15,7 @@ export function AiActions({ url, slug }: { url: string; slug: string }) {
 				src={`/blog/${slug}.md`}
 				label="Copy as Markdown"
 				showLabel
-				className="gap-2 text-[13px]"
+				className="text-[13px]"
 			/>
 			<a
 				href={`https://claude.ai/new?q=${prompt}`}

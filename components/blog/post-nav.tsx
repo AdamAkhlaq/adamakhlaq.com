@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { TocEntry } from "@/lib/blog/markdown";
-import { cn } from "@/lib/utils";
+import { clsx } from "clsx";
 import { profile } from "@/data/profile";
 import { useScrollSpy } from "./use-scroll-spy";
 
@@ -38,7 +38,7 @@ export function PostNav({
 
 	return (
 		<header
-			className={cn(
+			className={clsx(
 				"sticky top-0 z-50 border-b bg-background transition-colors duration-200",
 				scrolled ? "border-border" : "border-transparent",
 			)}
@@ -61,7 +61,7 @@ export function PostNav({
 
 				<p
 					aria-hidden={!titleHidden}
-					className={cn(
+					className={clsx(
 						"pointer-events-none absolute left-1/2 hidden max-w-[40%] -translate-x-1/2 truncate text-center text-sm text-muted-foreground transition-all duration-300 md:block",
 						titleHidden ? "mt-0 opacity-100" : "mt-1 opacity-0",
 					)}
@@ -78,7 +78,7 @@ export function PostNav({
 							key={l.label}
 							href={l.href}
 							aria-current={l.current ? "page" : undefined}
-							className={cn(
+							className={clsx(
 								"transition-colors",
 								l.current
 									? "text-foreground"
@@ -92,7 +92,7 @@ export function PostNav({
 			</div>
 			<div
 				aria-hidden
-				className={cn(
+				className={clsx(
 					"absolute inset-x-0 -bottom-px hidden h-px origin-left bg-foreground transition-opacity lg:block",
 					scrolled ? "opacity-100" : "opacity-0",
 				)}

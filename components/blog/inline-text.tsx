@@ -1,5 +1,5 @@
 import { splitInlineCode } from "@/lib/blog/inline-code";
-import { InlineCode } from "./prose";
+import { InlineCode } from "./inline-code";
 
 /** Frontmatter text, with `backticks` shown as inline code. */
 export function InlineText({ text }: { text: string }) {

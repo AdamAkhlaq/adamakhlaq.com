@@ -2,7 +2,7 @@
 
 import { useId, useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { clsx } from "clsx";
 import { InlineText } from "./inline-text";
 
 // Answers stay in the DOM when collapsed so crawlers and AI search can read
@@ -20,7 +20,7 @@ function Collapse({
 		<div
 			id={id}
 			role="region"
-			className={cn(
+			className={clsx(
 				"grid transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none",
 				open ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
 			)}
@@ -43,7 +43,7 @@ export function FaqCards({ faqs }: { faqs: { q: string; a: string }[] }) {
 				return (
 					<div
 						key={f.q}
-						className={cn(
+						className={clsx(
 							"rounded-xl border transition-colors",
 							isOpen ? "bg-muted/45" : "hover:border-foreground/25",
 						)}
@@ -58,7 +58,7 @@ export function FaqCards({ faqs }: { faqs: { q: string; a: string }[] }) {
 							>
 								{f.q}
 								<ChevronDown
-									className={cn(
+									className={clsx(
 										"size-4 shrink-0 text-muted-foreground transition-transform duration-300",
 										isOpen && "rotate-180",
 									)}

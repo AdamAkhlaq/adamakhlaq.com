@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { RetryButton } from "@/components/retry-button";
 
 export default function Error({
 	reset,
@@ -15,9 +15,7 @@ export default function Error({
 					Something went wrong
 				</h1>
 				<p className="text-muted-foreground">An unexpected error occurred.</p>
-				<Button variant="outline" onClick={reset}>
-					Try again
-				</Button>
+				<RetryButton onClick={reset}>Try again</RetryButton>
 			</div>
 		</div>
 	);
