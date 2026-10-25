@@ -19,10 +19,16 @@ const ThemeContext = createContext<{
 const THEME_CHANGE_EVENT = "themechange";
 
 function subscribe(callback: () => void) {
-	window.addEventListener("storage", callback);
+	// Another tab changed the theme, so this tab's <html> class is stale too.
+	const onStorage = (event: StorageEvent) => {
+		if (event.key !== "theme" && event.key !== null) return;
+		document.documentElement.classList.toggle("dark", getSnapshot() === "dark");
+		callback();
+	};
+	window.addEventListener("storage", onStorage);
 	window.addEventListener(THEME_CHANGE_EVENT, callback);
 	return () => {
-		window.removeEventListener("storage", callback);
+		window.removeEventListener("storage", onStorage);
 		window.removeEventListener(THEME_CHANGE_EVENT, callback);
 	};
 }
