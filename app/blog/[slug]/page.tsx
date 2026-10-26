@@ -13,6 +13,7 @@ import { SourcesRows } from "@/components/blog/sources";
 import { TocMobileBar, TocProgress } from "@/components/blog/toc";
 import { loadPostModule } from "@/lib/blog/post-module";
 import { getPost, getPostSlugs } from "@/lib/blog/posts";
+import { xHandle } from "@/data/links";
 import { profile } from "@/data/profile";
 
 export async function generateStaticParams() {
@@ -54,7 +55,7 @@ export async function generateMetadata({
 			card: "summary_large_image",
 			title: post.title,
 			description: post.description,
-			creator: "@AdamAkhlaq",
+			creator: xHandle,
 		},
 	};
 }

@@ -2,6 +2,9 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { xHandle } from "@/data/links";
+import { profile } from "@/data/profile";
+import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const geist = Geist({
@@ -21,33 +24,30 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-	title: "Adam Akhlaq",
-	description:
-		"Full-stack software engineer. I build products that matter to me, whether they're useful tools or just fun experiments.",
+	title: profile.name,
+	description: profile.description,
 	keywords: [
-		"Adam Akhlaq",
+		profile.name,
 		"software engineer",
 		"developer",
 		"web development",
 		"software development",
 	],
-	authors: [{ name: "Adam Akhlaq" }],
-	creator: "Adam Akhlaq",
+	authors: [{ name: profile.name }],
+	creator: profile.name,
 	openGraph: {
 		type: "website",
-		locale: "en_US",
-		url: "https://adamakhlaq.com",
-		title: "Adam Akhlaq",
-		description:
-			"Full-stack software engineer. I build products that matter to me, whether they're useful tools or just fun experiments.",
-		siteName: "Adam Akhlaq",
+		locale: "en_GB",
+		url: siteUrl,
+		title: profile.name,
+		description: profile.description,
+		siteName: profile.name,
 	},
 	twitter: {
 		card: "summary_large_image",
-		title: "Adam Akhlaq",
-		description:
-			"Full-stack software engineer. I build products that matter to me, whether they're useful tools or just fun experiments.",
-		creator: "@adamakhlaq",
+		title: profile.name,
+		description: profile.description,
+		creator: xHandle,
 	},
 	robots: {
 		index: true,
@@ -60,10 +60,10 @@ export const metadata: Metadata = {
 			"max-snippet": -1,
 		},
 	},
-	metadataBase: new URL("https://adamakhlaq.com"),
+	metadataBase: new URL(siteUrl),
 	alternates: {
 		types: {
-			"application/rss+xml": [{ url: "/feed.xml", title: "Adam Akhlaq" }],
+			"application/rss+xml": [{ url: "/feed.xml", title: profile.name }],
 		},
 	},
 };
@@ -77,7 +77,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" suppressHydrationWarning>
+		<html lang="en-GB" suppressHydrationWarning>
 			<head>
 				<script dangerouslySetInnerHTML={{ __html: themeScript }} />
 				<Script

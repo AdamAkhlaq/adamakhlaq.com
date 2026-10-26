@@ -49,3 +49,5 @@ export const socialLinks: SocialLink[] = [
 		url: "mailto:adam@adamakhlaq.com",
 	},
 ];
+
+export const xHandle = socialLinks.find((link) => link.id === "x")?.handle;
