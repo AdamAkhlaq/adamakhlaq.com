@@ -2,11 +2,14 @@ import dynamic from "next/dynamic";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { feedAlternate } from "@/lib/site";
 
 export const metadata: Metadata = {
 	title: "Flag Quiz | Adam Akhlaq",
 	description: "Test your knowledge of world flags.",
+	alternates: { canonical: "/flag-quiz", types: feedAlternate },
 	openGraph: {
+		url: "/flag-quiz",
 		title: "Flag Quiz | Adam Akhlaq",
 		description: "Test your knowledge of world flags.",
 	},

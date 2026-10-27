@@ -15,6 +15,7 @@ import { loadPostModule } from "@/lib/blog/post-module";
 import { getPost, getPostSlugs } from "@/lib/blog/posts";
 import { xHandle } from "@/data/links";
 import { profile } from "@/data/profile";
+import { feedAlternate } from "@/lib/site";
 
 export async function generateStaticParams() {
 	const slugs = await getPostSlugs();
@@ -34,10 +35,9 @@ export async function generateMetadata({
 		authors: [{ name: profile.name }],
 		alternates: {
 			canonical: `/blog/${slug}`,
-			// Replaces the root layout's alternates, so the feed is listed again.
 			types: {
 				"text/markdown": `/blog/${slug}.md`,
-				"application/rss+xml": [{ url: "/feed.xml", title: profile.name }],
+				...feedAlternate,
 			},
 		},
 		openGraph: {

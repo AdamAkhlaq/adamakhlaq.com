@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
+import { feedAlternate } from "@/lib/site";
 import { Section } from "@/components/section";
 import { WorkSection } from "@/components/work-section";
 import { ProjectsSection } from "@/components/projects-section";
 import { WritingSection } from "@/components/blog/writing-section";
+
+export const metadata: Metadata = {
+	alternates: { canonical: "/", types: feedAlternate },
+};
 
 export default function Home() {
 	return (

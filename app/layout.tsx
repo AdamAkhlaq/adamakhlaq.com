@@ -4,7 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { xHandle } from "@/data/links";
 import { profile } from "@/data/profile";
-import { siteUrl } from "@/lib/site";
+import { feedAlternate, siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const geist = Geist({
@@ -61,11 +61,7 @@ export const metadata: Metadata = {
 		},
 	},
 	metadataBase: new URL(siteUrl),
-	alternates: {
-		types: {
-			"application/rss+xml": [{ url: "/feed.xml", title: profile.name }],
-		},
-	},
+	alternates: { types: feedAlternate },
 };
 
 // Inline script to prevent FOUC by reading theme from localStorage before first paint.
