@@ -4,7 +4,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { xHandle } from "@/data/links";
 import { profile } from "@/data/profile";
-import { feedAlternate, siteUrl } from "@/lib/site";
+import { feedAlternate } from "@/lib/feed";
+import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const geist = Geist({

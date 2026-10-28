@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { feedAlternate } from "@/lib/site";
+import { feedAlternate } from "@/lib/feed";
 import { Section } from "@/components/section";
 import { WorkSection } from "@/components/work-section";
 import { ProjectsSection } from "@/components/projects-section";

@@ -15,7 +15,7 @@ import { loadPostModule } from "@/lib/blog/post-module";
 import { getPost, getPostSlugs } from "@/lib/blog/posts";
 import { xHandle } from "@/data/links";
 import { profile } from "@/data/profile";
-import { feedAlternate } from "@/lib/site";
+import { feedAlternate } from "@/lib/feed";
 
 export async function generateStaticParams() {
 	const slugs = await getPostSlugs();

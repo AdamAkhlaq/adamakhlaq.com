@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { feedAlternate } from "@/lib/site";
+import { feedAlternate } from "@/lib/feed";
 
 export const metadata: Metadata = {
 	title: "Flag Quiz | Adam Akhlaq",
