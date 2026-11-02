@@ -1,5 +1,5 @@
 import { Entry } from "@/components/entry";
-import { FaviconIcon } from "@/components/favicon-icon";
+import { IconTile } from "@/components/icon-tile";
 import { roles } from "@/data/work";
 
 export function WorkSection() {
@@ -17,8 +17,8 @@ export function WorkSection() {
 					title={
 						<>
 							{role.icon && (
-								<FaviconIcon
-									src={role.icon}
+								<IconTile
+									icon={role.icon}
 									alt={`${role.company} logo`}
 									imgClassName={role.iconClassName}
 								/>
