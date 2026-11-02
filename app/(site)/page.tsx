@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { feedAlternate } from "@/lib/feed";
+import { homeStructuredData } from "@/lib/structured-data";
+import { JsonLd } from "@/components/json-ld";
 import { Section } from "@/components/section";
 import { WorkSection } from "@/components/work-section";
 import { ProjectsSection } from "@/components/projects-section";
@@ -12,6 +14,7 @@ export const metadata: Metadata = {
 export default function Home() {
 	return (
 		<div className="flex flex-col gap-12">
+			<JsonLd data={homeStructuredData} />
 			<Section id="work" title="Work">
 				<WorkSection />
 			</Section>

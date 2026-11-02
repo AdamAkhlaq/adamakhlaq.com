@@ -1,8 +1,8 @@
 import Image from "next/image";
+import { JsonLd } from "@/components/json-ld";
 import { formatDate, type Post } from "@/lib/blog/posts";
-import { siteUrl } from "@/lib/site";
+import { person } from "@/lib/structured-data";
 import { profile } from "@/data/profile";
-import { socialLinks } from "@/data/links";
 
 export function Avatar({ size = 28 }: { size?: number }) {
 	return (
@@ -31,31 +31,21 @@ export function Byline({ post }: { post: Post }) {
 }
 
 export function PostJsonLd({ post }: { post: Post }) {
-	const data = {
-		"@context": "https://schema.org",
-		"@type": "BlogPosting",
-		headline: post.title,
-		description: post.description,
-		datePublished: post.published,
-		dateModified: post.updated ?? post.published,
-		url: post.url,
-		mainEntityOfPage: post.url,
-		image: `${post.url}/opengraph-image`,
-		inLanguage: "en-GB",
-		author: {
-			"@type": "Person",
-			name: profile.name,
-			url: siteUrl,
-			jobTitle: "Software Engineer",
-			sameAs: socialLinks
-				.filter((l) => l.url.startsWith("http"))
-				.map((l) => l.url),
-		},
-	};
 	return (
-		<script
-			type="application/ld+json"
-			dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+		<JsonLd
+			data={{
+				"@context": "https://schema.org",
+				"@type": "BlogPosting",
+				headline: post.title,
+				description: post.description,
+				datePublished: post.published,
+				dateModified: post.updated ?? post.published,
+				url: post.url,
+				mainEntityOfPage: post.url,
+				image: `${post.url}/opengraph-image`,
+				inLanguage: "en-GB",
+				author: person,
+			}}
 		/>
 	);
 }

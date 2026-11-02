@@ -7,6 +7,8 @@ export interface Role {
 	title: string;
 	/** Free-form date string shown in the left gutter, e.g. "2023 - Present". */
 	dateRange: string;
+	/** Set on the role you hold now. It becomes your job title in search results. */
+	current?: boolean;
 	/** Favicon / logo URL shown in a small tile before the company name. Optional. */
 	icon?: string;
 	/** Optional Tailwind size for the icon inside its tile, e.g. "size-5". */
@@ -30,6 +32,7 @@ export interface Role {
  * 	company: "Company",
  * 	title: "Your Title",
  * 	dateRange: "2025 - Present",
+ * 	current: true,                    // only on the role you hold now
  * 	icon: "https://icons.duckduckgo.com/ip3/example.com.ico",
  * 	iconClassName: "size-5",          // optional, only if the logo looks small
  * 	location: "City, Country",       // optional
@@ -42,6 +45,7 @@ export const roles: Role[] = [
 		company: "bp",
 		title: "Software Engineer",
 		dateRange: "2023 - Present",
+		current: true,
 		icon: "/bp.svg",
 		iconClassName: "size-5",
 		location: "London, UK",
