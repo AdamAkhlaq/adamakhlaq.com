@@ -56,64 +56,60 @@ export default async function Image({
 	const art = Illustration ? <Illustration /> : <FallbackArt slug={slug} />;
 
 	return new ImageResponse(
-		(
+		<div
+			style={{
+				display: "flex",
+				width: "100%",
+				height: "100%",
+				background: "#fff",
+				color: "#000",
+				fontFamily: "Geist",
+			}}
+		>
 			<div
 				style={{
 					display: "flex",
-					width: "100%",
-					height: "100%",
-					background: "#fff",
-					color: "#000",
-					fontFamily: "Geist",
+					flexDirection: "column",
+					width: 648,
+					padding: 60,
+					gap: 60,
 				}}
 			>
-				<div
-					style={{
-						display: "flex",
-						flexDirection: "column",
-						width: 648,
-						padding: 60,
-						gap: 60,
-					}}
-				>
-					<div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-						<img
-							src={avatar}
-							alt=""
-							width={40}
-							height={40}
-							style={{ borderRadius: 999, border: "1px solid #e5e5e5" }}
-						/>
-						<span style={{ fontSize: 26, fontWeight: 500 }}>
-							{profile.name}
-						</span>
-					</div>
-					<span
-						style={{
-							fontSize: title.length > 40 ? 64 : 76,
-							fontWeight: 700,
-							lineHeight: 0.98,
-							letterSpacing: "-0.045em",
-						}}
-					>
-						{title}
-					</span>
-				</div>
-				<div
-					style={{
-						display: "flex",
-						...artSize,
-						borderLeft: "1px solid rgba(0,0,0,0.1)",
-					}}
-				>
+				<div style={{ display: "flex", alignItems: "center", gap: 16 }}>
 					<img
-						src={svgDataUri(art, { color: "#000", ...artSize })}
+						src={avatar}
 						alt=""
-						{...artSize}
+						width={40}
+						height={40}
+						style={{ borderRadius: 999, border: "1px solid #e5e5e5" }}
 					/>
+					<span style={{ fontSize: 26, fontWeight: 500 }}>{profile.name}</span>
 				</div>
+				<span
+					style={{
+						fontSize: title.length > 40 ? 64 : 76,
+						fontWeight: 700,
+						lineHeight: 0.98,
+						letterSpacing: "-0.045em",
+					}}
+				>
+					{title}
+				</span>
 			</div>
-		),
+			<div
+				style={{
+					display: "flex",
+					...artSize,
+					borderLeft: "1px solid rgba(0,0,0,0.1)",
+				}}
+			>
+				<img
+					src={svgDataUri(art, { color: "#000", ...artSize })}
+					alt=""
+					{...artSize}
+				/>
+			</div>
+		</div>,
 		{
 			...size,
 			fonts: [

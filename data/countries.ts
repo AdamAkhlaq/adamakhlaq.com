@@ -1,10 +1,5 @@
 export type Continent =
-	| "Africa"
-	| "Asia"
-	| "Europe"
-	| "North America"
-	| "South America"
-	| "Oceania";
+	"Africa" | "Asia" | "Europe" | "North America" | "South America" | "Oceania";
 
 export interface Country {
 	name: string;

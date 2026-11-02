@@ -10,18 +10,16 @@ const src = `data:image/jpeg;base64,${photo.toString("base64")}`;
 
 export function profileIcon(size: number, { round }: { round: boolean }) {
 	return new ImageResponse(
-		(
-			<div style={{ display: "flex", width: "100%", height: "100%" }}>
-				{/* eslint-disable-next-line @next/next/no-img-element */}
-				<img
-					src={src}
-					alt=""
-					width={size}
-					height={size}
-					style={{ borderRadius: round ? "50%" : 0 }}
-				/>
-			</div>
-		),
+		<div style={{ display: "flex", width: "100%", height: "100%" }}>
+			{/* eslint-disable-next-line @next/next/no-img-element */}
+			<img
+				src={src}
+				alt=""
+				width={size}
+				height={size}
+				style={{ borderRadius: round ? "50%" : 0 }}
+			/>
+		</div>,
 		{ width: size, height: size },
 	);
 }
