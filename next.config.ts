@@ -49,11 +49,6 @@ const nextConfig: NextConfig = {
 		],
 	},
 
-	// Optimize barrel imports for tree-shaking
-	experimental: {
-		optimizePackageImports: ["lucide-react"],
-	},
-
 	async headers() {
 		return [{ source: "/:path*", headers: securityHeaders }];
 	},

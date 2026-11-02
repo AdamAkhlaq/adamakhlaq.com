@@ -10,10 +10,10 @@ The source for my personal website, a minimal, fast, content-driven portfolio fo
 | --------------- | ------------------------------------------------------------------------------------------------- |
 | Framework       | [Next.js 16](https://nextjs.org/), App Router, React Server Components                            |
 | UI library      | [React 19](https://react.dev/)                                                                    |
-| Language        | [TypeScript 5](https://www.typescriptlang.org/) (strict mode)                                     |
+| Language        | [TypeScript 6](https://www.typescriptlang.org/) (strict mode)                                     |
 | Styling         | [Tailwind CSS v4](https://tailwindcss.com/) with CSS-variable design tokens                       |
 | Components      | [Radix UI](https://www.radix-ui.com/) primitives + shadcn-style (`cva`, `clsx`, `tailwind-merge`) |
-| Animation       | [Framer Motion](https://www.framer.com/motion/)                                                   |
+| Animation       | [Motion](https://motion.dev/)                                                                     |
 | Icons           | [Lucide](https://lucide.dev/)                                                                     |
 | Fonts           | [Geist](https://vercel.com/font) Sans, Mono & Pixel                                               |
 | Blog            | [MDX](https://mdxjs.com/) via `@next/mdx`, [Shiki](https://shiki.style/), [Zod](https://zod.dev/) |
