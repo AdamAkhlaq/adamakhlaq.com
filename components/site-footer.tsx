@@ -7,7 +7,7 @@ import { profile } from "@/data/profile";
 export function SiteFooter() {
 	return (
 		<footer className="flex flex-col gap-4 pt-12 text-[13px] text-muted-foreground">
-			<div className="flex items-center justify-between lg:hidden">
+			<div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2.5 lg:hidden">
 				<ThemeToggle />
 				<LondonClock className="font-mono" />
 			</div>

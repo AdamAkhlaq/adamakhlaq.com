@@ -43,7 +43,7 @@ export function PostNav({
 				scrolled ? "border-border" : "border-transparent",
 			)}
 		>
-			<div className="relative mx-auto flex h-14 w-full max-w-6xl items-center gap-6 px-6 sm:px-10">
+			<div className="relative mx-auto flex h-14 w-full max-w-6xl items-center gap-4 px-6 sm:gap-6 sm:px-10">
 				<Link
 					href="/"
 					className="group flex shrink-0 items-center gap-2.5 text-[15px] font-medium"
@@ -56,7 +56,7 @@ export function PostNav({
 						preload
 						className="size-7 rounded-full border object-cover transition-transform duration-200 group-hover:scale-105"
 					/>
-					{profile.name}
+					<span className="max-[375px]:sr-only">{profile.name}</span>
 				</Link>
 
 				<p
@@ -71,7 +71,7 @@ export function PostNav({
 
 				<nav
 					aria-label="Site"
-					className="ml-auto flex items-center gap-5 text-sm"
+					className="ml-auto flex items-center gap-4 text-sm sm:gap-5"
 				>
 					{links.map((l) => (
 						<Link

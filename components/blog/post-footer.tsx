@@ -49,11 +49,11 @@ export function PostFooter() {
 					</a>
 				</nav>
 
-				<div className="grid grid-cols-2 items-center gap-y-3 border-t pt-6 sm:grid-cols-[1fr_auto_1fr]">
+				<div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t pt-6 max-[360px]:flex-col max-[360px]:gap-y-2 sm:grid sm:grid-cols-[1fr_auto_1fr]">
 					<div className="justify-self-start">
 						<ThemeToggle />
 					</div>
-					<p className="order-last col-span-2 justify-self-center text-[13px] text-muted-foreground sm:order-none sm:col-span-1">
+					<p className="order-last w-full text-center text-[13px] text-muted-foreground max-[360px]:mt-1.5 sm:order-none sm:w-auto">
 						© <CurrentYear /> {profile.name}
 					</p>
 					<LondonClock className="justify-self-end font-mono text-[13px] text-muted-foreground" />
