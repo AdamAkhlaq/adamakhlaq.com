@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
-import { xHandle } from "@/data/links";
 import { profile } from "@/data/profile";
 import { feedAlternate } from "@/lib/feed";
 import { siteUrl } from "@/lib/site";
@@ -48,7 +47,6 @@ export const metadata: Metadata = {
 		card: "summary_large_image",
 		title: profile.name,
 		description: profile.description,
-		creator: xHandle,
 	},
 	robots: {
 		index: true,

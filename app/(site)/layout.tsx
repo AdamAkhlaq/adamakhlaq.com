@@ -7,12 +7,12 @@ export default function SiteLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<div className="mx-auto flex min-h-svh w-full max-w-7xl flex-col gap-14 px-6 pb-16 pt-12 sm:px-10 sm:pt-16 lg:grid lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:items-start lg:gap-x-24 lg:px-16 lg:pt-24 xl:px-28">
-			<Sidebar />
-			<div className="flex min-w-0 flex-col">
-				<main className="flex-1">{children}</main>
-				<SiteFooter />
+		<div className="flex min-h-svh flex-col">
+			<div className="mx-auto grid w-full max-w-6xl flex-1 gap-12 px-6 pb-24 pt-10 sm:px-10 sm:pt-14 lg:grid-cols-[17rem_minmax(0,1fr)] lg:items-start lg:gap-16 xl:grid-cols-[19rem_minmax(0,1fr)]">
+				<Sidebar />
+				<main className="min-w-0">{children}</main>
 			</div>
+			<SiteFooter />
 		</div>
 	);
 }

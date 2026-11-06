@@ -2,10 +2,10 @@ import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
- * A small bordered tile holding a logo or icon, sized to sit inline before an
- * entry title. An image uses a plain <img> so any external favicon URL works
- * without next/image remote-pattern config; a Lucide icon takes the text
- * colour, so it follows the theme.
+ * A small bordered tile holding a logo or icon, shown before a card's title.
+ * An image uses a plain <img> so any external favicon URL works without
+ * next/image remote-pattern config; a Lucide icon takes the text colour, so it
+ * follows the theme.
  */
 export function IconTile({
 	icon: Icon,
@@ -19,18 +19,18 @@ export function IconTile({
 	imgClassName?: string;
 }) {
 	return (
-		<span className="mr-1 flex size-6 shrink-0 items-center justify-center overflow-hidden rounded-md border bg-card">
+		<span className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-lg border bg-card">
 			{typeof Icon === "string" ? (
 				// eslint-disable-next-line @next/next/no-img-element
 				<img
 					src={Icon}
 					alt={alt}
-					className={cn("size-3.5 object-contain", imgClassName)}
+					className={cn("size-4 object-contain", imgClassName)}
 					loading="lazy"
 					decoding="async"
 				/>
 			) : (
-				<Icon className="size-3.5" aria-hidden />
+				<Icon className="size-4" aria-hidden />
 			)}
 		</span>
 	);

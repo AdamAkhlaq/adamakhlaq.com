@@ -1,55 +1,39 @@
+import type { ComponentType, SVGProps } from "react";
+import { Mail } from "lucide-react";
+import { GitHubIcon, LinkedInIcon } from "@/components/brand-icons";
+
 export interface SocialLink {
 	id: string;
 	label: string;
 	handle: string;
 	url: string;
+	/** Shown in the sidebar in place of the label, which becomes its accessible name. */
+	icon: ComponentType<SVGProps<SVGSVGElement>>;
 }
 
-// Shown in this order everywhere. Professional links come first because
-// they are the ones recruiters look for.
+// Shown in this order. Professional links come first because they are the
+// ones recruiters look for. For a brand with no Lucide icon, add its Simple
+// Icons path to components/brand-icons.tsx.
 export const socialLinks: SocialLink[] = [
 	{
 		id: "linkedin",
 		label: "LinkedIn",
 		handle: "in/adamakhlaq",
 		url: "https://www.linkedin.com/in/adamakhlaq",
+		icon: LinkedInIcon,
 	},
 	{
 		id: "github",
 		label: "GitHub",
 		handle: "adamakhlaq",
 		url: "https://github.com/adamakhlaq",
+		icon: GitHubIcon,
 	},
 	{
 		id: "email",
 		label: "Email",
 		handle: "adam@adamakhlaq.com",
 		url: "mailto:adam@adamakhlaq.com",
-	},
-	{
-		id: "x",
-		label: "X",
-		handle: "@AdamAkhlaq",
-		url: "https://x.com/AdamAkhlaq",
-	},
-	{
-		id: "youtube",
-		label: "YouTube",
-		handle: "@codebyadama",
-		url: "https://youtube.com/@codebyadama",
-	},
-	{
-		id: "tiktok",
-		label: "TikTok",
-		handle: "@codebyadama",
-		url: "https://tiktok.com/@codebyadama",
-	},
-	{
-		id: "instagram",
-		label: "Instagram",
-		handle: "@codebyadam",
-		url: "https://instagram.com/codebyadam",
+		icon: Mail,
 	},
 ];
-
-export const xHandle = socialLinks.find((link) => link.id === "x")?.handle;

@@ -5,7 +5,7 @@ import { Changelog } from "@/components/blog/changelog";
 import { createCite } from "@/components/blog/cite";
 import { FaqCards } from "@/components/blog/faq";
 import { InlineText } from "@/components/blog/inline-text";
-import { PostFooter } from "@/components/blog/post-footer";
+import { SiteFooter } from "@/components/site-footer";
 import { Byline, PostJsonLd } from "@/components/blog/post-meta";
 import { PostNav } from "@/components/blog/post-nav";
 import { H2, Prose } from "@/components/blog/prose";
@@ -13,7 +13,6 @@ import { SourcesRows } from "@/components/blog/sources";
 import { TocMobileBar, TocProgress } from "@/components/blog/toc";
 import { loadPostModule } from "@/lib/blog/post-module";
 import { getPost, getPostSlugs } from "@/lib/blog/posts";
-import { xHandle } from "@/data/links";
 import { profile } from "@/data/profile";
 import { feedAlternate } from "@/lib/feed";
 
@@ -55,7 +54,6 @@ export async function generateMetadata({
 			card: "summary_large_image",
 			title: post.title,
 			description: post.description,
-			creator: xHandle,
 		},
 	};
 }
@@ -154,7 +152,7 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
 				</div>
 			</div>
 
-			<PostFooter />
+			<SiteFooter className="mt-24" />
 		</>
 	);
 }

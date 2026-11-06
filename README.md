@@ -51,7 +51,7 @@ app/
   sitemap.ts       # Generated sitemap.xml
   robots.ts        # Generated robots.txt
   globals.css      # Tailwind + design tokens
-components/        # Shared UI (sidebar, entries, sections, footer, theme, ui/ primitives)
+components/        # Shared UI (sidebar, sections, cards, footer, theme, ui/ primitives)
   blog/            # Post page components (prose, code blocks, contents, art)
 content/blog/      # Posts: one folder per post, index.mdx plus its own components
 data/              # Typed content: profile, work, projects, links, countries

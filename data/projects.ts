@@ -20,7 +20,7 @@ export interface Project {
 	 * entry non-clickable.
 	 */
 	url?: string;
-	/** Optional year shown in the left gutter, e.g. "2025". */
+	/** Optional year shown as a pill on the card, e.g. "2025". */
 	year?: string;
 	/** Languages, platforms and tools, shown as one monospace line. Optional. */
 	stack?: string[];

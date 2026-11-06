@@ -5,7 +5,7 @@ export interface Role {
 	company: string;
 	/** Your role, shown under the company. */
 	title: string;
-	/** Free-form date string shown in the left gutter, e.g. "2023 - Present". */
+	/** Free-form date string shown as a pill on the card, e.g. "2023 - Present". */
 	dateRange: string;
 	/** Set on the role you hold now. It becomes your job title in search results. */
 	current?: boolean;
@@ -13,7 +13,7 @@ export interface Role {
 	icon?: string;
 	/** Optional Tailwind size for the icon inside its tile, e.g. "size-5". */
 	iconClassName?: string;
-	/** Shown under the date range in the gutter. Optional. */
+	/** Shown after the title, under the company. Optional. */
 	location?: string;
 	/**
 	 * One or more short paragraphs describing the role.

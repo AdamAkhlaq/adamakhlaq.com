@@ -1,19 +1,21 @@
 import { ThemeToggle } from "@/components/theme-toggle";
 import { CurrentYear, LondonClock } from "@/components/footer-time";
+import { cn } from "@/lib/utils";
 import { profile } from "@/data/profile";
 
-// On large screens the theme toggle and clock live at the bottom of the
-// sticky sidebar, so the footer only repeats them on smaller screens.
-export function SiteFooter() {
+/** The footer every page ends with. */
+export function SiteFooter({ className }: { className?: string }) {
 	return (
-		<footer className="flex flex-col gap-4 pt-12 text-[13px] text-muted-foreground">
-			<div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2.5 lg:hidden">
-				<ThemeToggle />
-				<LondonClock className="font-mono" />
+		<footer className={cn("border-t", className)}>
+			<div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-1 px-6 py-3 text-[13px] text-muted-foreground sm:px-10 sm:py-5">
+				<p className="py-2">
+					© <CurrentYear /> {profile.name}
+				</p>
+				<div className="flex items-center gap-5 max-sm:w-full max-sm:justify-between">
+					<LondonClock className="font-mono tabular-nums" />
+					<ThemeToggle />
+				</div>
 			</div>
-			<p>
-				© <CurrentYear /> {profile.name}
-			</p>
 		</footer>
 	);
 }

@@ -4,7 +4,7 @@ import { formatDate, type Post } from "@/lib/blog/posts";
 import { person } from "@/lib/structured-data";
 import { profile } from "@/data/profile";
 
-export function Avatar({ size = 28 }: { size?: number }) {
+function Avatar({ size = 28 }: { size?: number }) {
 	return (
 		<Image
 			src={profile.photo}
